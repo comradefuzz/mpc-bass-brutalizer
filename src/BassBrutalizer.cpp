@@ -150,7 +150,9 @@ constexpr int kWords[kNumWords][4] = {
     {0, 0, 3, 3},   // OOH-AAH  oo oo ah ah
     {5, 1, 0, 0},   // EOW      eh oh oo oo
     {3, 0, 3, 0}};  // MAMA     ah oo ah oo
-constexpr float kVowelMakeup = 3.0f;   // calibrated so the vowel stage is about as loud as its input
+// Makeup gain per character (Normal, Choir, Whisper, Robot), measured so that the vowel stage is about
+// as loud as the signal it replaces (tests/vowel_test.cpp prints the levels).
+constexpr float kVowelMakeup[4] = {6.0f, 3.7f, 7.5f, 9.0f};
 
 struct Channel
 {
@@ -345,6 +347,22 @@ public:
         addProgram2("Chainsaw",       PS().Out(-8).Drv(40).Mode(kHard).Split(120).Sub(30).Tone(7000).Wob(kWobPre, 800, 80, 85, 2, 0, 8.0f));
         addProgram2("Lo-Fi Grit",     PS().Out(-2).Drv(20).Mode(kRect).Bias(10).Split(90).Tone(1500).Mix(70).Bits(8).Dec(6));
         addProgram2("Wall Of Noise",  PS().Out(-3).Drv(36).Mode(kFold).Bias(10).Split(90).Sub(100).Tone(7000).Bits(8).Dec(3).Ring(25, 330));
+        // --- vowels: Vow(pos 2 = Post, mode 3 = Step, word, sync) / VowAB / Voice ---
+        // sync choice indices: 1/16 = 5, 1/8T = 6, 1/8 = 8, 1/4 = 11, 1/2 = 14
+        addProgram2("Wow Bass",       PS().Out(-5.5).Drv(30).Mode(kHard).Split(80).Sub(60).Tone(9000).Vow(2, 3, 0, 8));
+        addProgram2("Yay Growl",      PS().Out(-11).Drv(34).Mode(kFold).SplitOff().Tone(9000).Vow(2, 3, 1, 8));
+        addProgram2("Yo-Yo",          PS().Out(-7).Drv(32).Mode(kHard).Split(80).Sub(0).Tone(9000).Vow(2, 3, 2, 5));
+        addProgram2("Yeah Bass",      PS().Out(-3).Drv(28).Split(90).Sub(80).Tone(8000).Vow(2, 3, 3, 11).Voice(0, 70, 100, 0, 60));
+        addProgram2("Yoi Yoi",        PS().Out(-7).Drv(40).Mode(kHard).Split(80).Sub(0).Tone(9000).Vow(2, 3, 4, 5).Voice(0, 75, 100, 0, 15));
+        addProgram2("Talking LFO",    PS().Out(-4).Drv(30).Mode(kHard).Split(80).Sub(40).Tone(9000).Vow(2, 1, 0, 11).VowAB(0, 3, 50, 100));
+        addProgram2("Mouth Follow",   PS().Out(-7).Drv(30).Mode(kHard).Split(90).Sub(30).Tone(9000).Vow(2, 2, 0, 0).VowAB(0, 6, 0, 100).Voice(0, 60, 100, 0, 12));
+        addProgram2("Choir Bass",     PS().Out(5).Drv(22).Split(90).Sub(60).Tone(7000).Vow(2, 1, 0, 14).VowAB(1, 5, 50, 70).Voice(0, 55, 80, 1, 60));
+        addProgram2("Whisper Wub",    PS().Out(-4).Drv(30).Mode(kHard).Split(80).Sub(0).Tone(9000).Vow(2, 3, 8, 8).Voice(0, 60, 100, 2, 30));
+        addProgram2("Chipmunk",       PS().Out(0).Drv(26).Mode(kHard).Split(80).Sub(40).Tone(10000).Vow(2, 3, 1, 5).Voice(9, 60, 100, 0, 15));
+        addProgram2("Giant Talk",     PS().Out(-8).Drv(30).Split(80).Sub(60).Tone(7000).Vow(2, 3, 5, 11).Voice(-9, 60, 100, 0, 60));
+        addProgram2("Robot Vowel",    PS().Out(-5).Drv(28).Mode(kHard).Split(80).Sub(50).Tone(8000).Vow(2, 3, 6, 8).Voice(0, 60, 100, 3, 5));
+        addProgram2("Alien Eow",      PS().Out(-10).Drv(34).Mode(kFold).Split(80).Sub(30).Tone(9000).Vow(2, 3, 7, 8).Voice(5, 80, 100, 0, 40));
+        addProgram2("Pre Growl",      PS().Out(-6).Drv(36).Mode(kHard).Split(80).Sub(40).Tone(8000).Vow(1, 1, 0, 11).VowAB(0, 3, 50, 100));
     }
 
     void prepare(double sampleRate, int maxBlockSize) override
@@ -589,7 +607,7 @@ public:
                         ch.vow[sg * 3 + k].processAll(src, lp, bp, hp);
                         sum += bp * vowK * kFormGain[k] * singerGain;
                     }
-                const float voiced = mpc::dsp::sanitize(sum * kVowelMakeup);
+                const float voiced = mpc::dsp::sanitize(sum * kVowelMakeup[mpc::clamp(vowChar, 0, 3)]);
                 return x + (voiced - x) * vowMix;
             };
 

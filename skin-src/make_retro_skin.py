@@ -319,7 +319,75 @@ def _icon_crazy(c, w, h, col):
         capsule(c, a[0], a[1], b[0], b[1], 2.6, col)
 
 
-CUSTOM_ICONS.update({"sober": _icon_sober, "drunk": _icon_drunk, "crazy": _icon_crazy})
+def _poly(c, pts, col, w=2.4):
+    for a, b in zip(pts, pts[1:]):
+        capsule(c, a[0], a[1], b[0], b[1], w, col)
+
+
+def _vm_geom(w, h):
+    return 12.0, w - 12.0, (h - 12) / 2.0 + 3.0, (h - 22) / 2.0
+
+
+def _icon_vm_manual(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    cx = w / 2.0
+    ring(c, cx, cy, 7.5, 9.5, col)
+    capsule(c, cx, cy, cx + 5.0, cy - 6.0, 2.2, col)
+
+
+def _icon_vm_lfo(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    _poly(c, [(x0 + (x1 - x0) * i / 40.0, cy - amp * 0.8 * math.sin(2 * math.pi * i / 40.0)) for i in range(41)], col)
+
+
+def _icon_vm_env(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    pts = [(0.0, 0.9), (0.12, -0.9), (0.3, -0.4), (0.6, 0.25), (1.0, 0.85)]
+    _poly(c, [(x0 + (x1 - x0) * px, cy - amp * py) for px, py in pts], col)
+
+
+def _icon_vm_step(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    levels = [-0.8, 0.0, 0.8, 0.1]
+    pts = []
+    for i, lv in enumerate(levels):
+        xa = x0 + (x1 - x0) * i / 4.0
+        xb = x0 + (x1 - x0) * (i + 1) / 4.0
+        pts += [(xa, cy - amp * lv), (xb, cy - amp * lv)]
+    _poly(c, pts, col)
+
+
+def _ellipse(c, cx, cy, rx, ry, col, w=2.0):
+    _poly(c, [(cx + rx * math.cos(2 * math.pi * i / 28.0), cy + ry * math.sin(2 * math.pi * i / 28.0)) for i in range(29)], col, w)
+
+
+def _icon_vc_normal(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    _ellipse(c, w / 2.0, cy, 11.0, 6.5, col, 2.4)
+
+
+def _icon_vc_choir(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    for dx, dy in ((-10.0, -3.0), (0.0, 3.0), (10.0, -3.0)):
+        _ellipse(c, w / 2.0 + dx, cy + dy, 7.0, 4.5, col, 1.8)
+
+
+def _icon_vc_whisper(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    for i, r in enumerate((3.0, 2.6, 2.2, 1.8, 1.4)):
+        circle(c, x0 + 3 + i * (x1 - x0 - 6) / 4.0, cy + (i % 2) * 4 - 2, r, col)
+
+
+def _icon_vc_robot(c, w, h, col):
+    x0, x1, cy, amp = _vm_geom(w, h)
+    _poly(c, [(x0, cy + 6), (x0, cy - 6), (x0 + 10, cy - 6), (x0 + 10, cy + 6), (x0 + 20, cy + 6), (x0 + 20, cy - 6),
+              (x1, cy - 6)], col)
+
+
+CUSTOM_ICONS.update({"sober": _icon_sober, "drunk": _icon_drunk, "crazy": _icon_crazy,
+                     "vm_manual": _icon_vm_manual, "vm_lfo": _icon_vm_lfo, "vm_env": _icon_vm_env, "vm_step": _icon_vm_step,
+                     "vc_normal": _icon_vc_normal, "vc_choir": _icon_vc_choir, "vc_whisper": _icon_vc_whisper,
+                     "vc_robot": _icon_vc_robot})
 
 
 def red_button(pressed):
@@ -549,7 +617,7 @@ def make_background(spec, seed):
     plate(b, 30, 548, 700, 612, rnd)
     b.text(52, 556, "BASS BRUTALIZER", 4, (46, 44, 38, 255), 1.0)
     b.text(53, 557, "BASS BRUTALIZER", 4, (255, 255, 255, 255), 0.18)
-    b.text(52, 590, "COMRADE FUZZ  MODEL BB-1  30 PARAMETERS", 2, (46, 44, 38, 255), 1.0)
+    b.text(52, 590, "COMRADE FUZZ  MODEL BB-1  45 PARAMETERS", 2, (46, 44, 38, 255), 1.0)
     b.text(730, 556, spec["page_tag"], 3, CREAM, 0.95)
     b.text(730, 586, "SER NO 0417  TY 25-2026", 2, CREAM_DIM, 0.95)
     # indicator lamps (decor)
@@ -600,7 +668,7 @@ PAGES = {
             "SPLIT: EVERYTHING BELOW THE CUTOFF STAYS CLEAN. SPLIT ON OFF OR 0 HZ = THE WHOLE SIGNAL IS DISTORTED.",
             "OCT SUB ADDS AN OCTAVE-DOWN SUB TONE. SUB SETS THE CLEAN LOW BAND LEVEL. MIX BLENDS DRY AND WET.",
         ],
-        "page_tag": "1/5  MAIN",
+        "page_tag": "1/7  MAIN",
     },
     "BAND": {
         "captions": ["MULTIBAND  (MIDS AND HIGHS SHAPED SEPARATELY)"],
@@ -608,7 +676,7 @@ PAGES = {
             "MULTIBAND ON: HI SPLIT DIVIDES THE BODY INTO MIDS AND HIGHS, EACH WITH ITS OWN SHAPER.",
             "HI DRIVE ADDS OR CUTS DRIVE ON THE HIGHS ONLY. MULTIBAND OFF = ONE SHAPER FOR EVERYTHING.",
         ],
-        "page_tag": "2/5  BAND",
+        "page_tag": "2/7  BAND",
     },
     "CRUSH": {
         "captions": ["BITCRUSH & DECIMATE", "RING MOD"],
@@ -616,7 +684,7 @@ PAGES = {
             "CRUSH ON / RING ON SWITCH EACH SECTION. BITS 16 AND DECIMATE 1X DO NOTHING EVEN WHEN ON.",
             "FEWER BITS = HARSHER QUANTISING. HIGHER DECIMATE = MORE ALIASING. RING HZ = CARRIER (METALLIC).",
         ],
-        "page_tag": "3/5  CRUSH",
+        "page_tag": "3/7  CRUSH",
     },
     "WOBBLE": {
         "captions": ["WOBBLE  (ON / POSITION / FILTER)", "LFO"],
@@ -624,7 +692,25 @@ PAGES = {
             "WOBBLE ON SWITCHES THE SECTION. POS: PRE = BEFORE DISTORTION (GROWL)  POST = AFTER CRUSH (WOBBLE).",
             "WOB SYNC: FREE = RATE IN HZ, OTHERWISE LOCKED TO THE MPC TEMPO. DEPTH 100% = PLUS MINUS 4 OCTAVES.",
         ],
-        "page_tag": "4/5  WOBBLE",
+        "page_tag": "4/7  WOBBLE",
+    },
+    "VOWEL": {
+        "captions": ["VOWEL STAGE  (FORMANT FILTERS)", "MOTION", "WORDS & TIMING"],
+        "hints": [
+            "VOWELS NEED HARMONICS: USE POS = POST (AFTER THE DRIVE). PRE FILTERS THE BODY BEFORE IT IS DISTORTED.",
+            "MODE: MANUAL = MORPH KNOB  LFO = SWEEPS A TO B  ENV = LOUDER OPENS THE MOUTH  STEP = A WORD.",
+            "STEP PLAYS 4 VOWELS PER LOOP: WOW YAY YO YEAH YOI WAH OOH-AAH EOW MAMA. SYNC SETS THE STEP SPEED.",
+        ],
+        "page_tag": "5/7  VOWEL",
+    },
+    "VOICE": {
+        "captions": ["VOICE"],
+        "hints": [
+            "GENDER SHIFTS EVERY FORMANT: UP = SMALL AND CARTOONISH, DOWN = GIANT. Q = HOW SHARP THE VOWEL IS.",
+            "CHAR: NORMAL  CHOIR (THREE DETUNED SINGERS)  WHISPER (NOISE VOICE)  ROBOT (HARD VOWEL SWITCHING).",
+            "VOW MIX BLENDS THE VOWEL SOUND WITH THE ORIGINAL SIGNAL. 0% = NO EFFECT.",
+        ],
+        "page_tag": "6/7  VOICE",
     },
     "RED BTN": {
         "captions": [],
@@ -633,7 +719,7 @@ PAGES = {
         "panels": [(30, 30, 462, 470), (482, 30, 1262, 470)],
         "extra": red_page_extra,
         "red": True,
-        "page_tag": "5/5  RED BTN",
+        "page_tag": "7/7  RED BTN",
     },
 }
 
@@ -718,9 +804,13 @@ def build(preview):
             keep.append(ent)
     big["componentsData"] = keep
     pd["componentDefinitions"]["localComponentDefinitions"].append({"key": "bigRed", "value": big})
+    pd["componentDefinitions"]["localComponentDefinitions"].append({"key": "radio4VMode", "value": icon_def("vmode")})
+    pd["componentDefinitions"]["localComponentDefinitions"].append({"key": "radio4VChar", "value": icon_def("vchar")})
     # control name -> (new type, base type, key count, key width, key pitch, caption y offset)
     icon_for = {"Mode": ("radio4Mode", "radio4", 4, 58, 62, 90), "Wob Shape": ("radio4Wave", "radio4", 4, 58, 62, 90),
-                "Wob Pos": ("radio3Pos", "radio3", 3, 80, 86, 90), "Sanity": ("radio3Sanity", "radio3", 3, 128, 142, 128)}
+                "Wob Pos": ("radio3Pos", "radio3", 3, 80, 86, 90), "Vow Pos": ("radio3Pos", "radio3", 3, 80, 86, 90),
+                "Vow Mode": ("radio4VMode", "radio4", 4, 58, 62, 90), "Vow Char": ("radio4VChar", "radio4", 4, 58, 62, 90),
+                "Sanity": ("radio3Sanity", "radio3", 3, 128, 142, 128)}
 
     # --- pages ---
     tab_specs = []
@@ -809,6 +899,10 @@ def build(preview):
         c = red_button(on); save("red_%s.png" % s, c); imgs["red_%s.png" % s] = c
         for k, ic in enumerate(("sober", "drunk", "crazy")):
             c = key(128, 72, on, ic); save("sanity_%d_%s.png" % (k, s), c); imgs["sanity_%d_%s.png" % (k, s)] = c
+        for k, ic in enumerate(("vm_manual", "vm_lfo", "vm_env", "vm_step")):
+            c = key(58, 42, on, ic); save("vmode_%d_%s.png" % (k, s), c); imgs["vmode_%d_%s.png" % (k, s)] = c
+        for k, ic in enumerate(("vc_normal", "vc_choir", "vc_whisper", "vc_robot")):
+            c = key(58, 42, on, ic); save("vchar_%d_%s.png" % (k, s), c); imgs["vchar_%d_%s.png" % (k, s)] = c
         for k, ic in enumerate(("sine", "tri", "saw", "square")):
             c = key(58, 42, on, ic); save("wave_%d_%s.png" % (k, s), c); imgs["wave_%d_%s.png" % (k, s)] = c
     print("rendering backgrounds ...")
@@ -824,7 +918,7 @@ def build(preview):
 
 
 SAMPLE = {"Drive": "18.0 DB", "Tone": "6000 HZ", "Mix": "100 %", "Output": "0.0 DB", "Bias": "0 %", "Pre Tilt": "0.0 DB",
-          "Split On": "ON", "Split": "100 HZ", "Sub": "100 %", "Oct Sub": "0 %", "Hi Split": "3000 HZ", "Hi Drive": "0.0 DB", "Sanity": "DRUNKISH", "Crush On": "ON", "Ring On": "ON", "Wobble On": "ON",
+          "Split On": "ON", "Split": "100 HZ", "Sub": "100 %", "Oct Sub": "0 %", "Hi Split": "3000 HZ", "Hi Drive": "0.0 DB", "Vowel On": "ON", "Morph": "0 %", "Vow Depth": "70 %", "Vow Glide": "25 MS", "Vow Word": "WOW", "Vow Sync": "1/8", "Vow Rate": "2.00 HZ", "Vowel A": "OO", "Vowel B": "AH", "Gender": "0.0 ST", "Vow Q": "60 %", "Vow Mix": "100 %", "Sanity": "DRUNKISH", "Crush On": "ON", "Ring On": "ON", "Wobble On": "ON",
           "Multiband": "OFF", "Bits": "OFF", "Decimate": "OFF", "Ring": "0 %", "Ring Hz": "150 HZ", "Wob Rate": "2.00 HZ",
           "Wob Depth": "50 %", "Wob Freq": "600 HZ", "Wob Reso": "40 %"}
 

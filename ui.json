@@ -143,6 +143,82 @@
       ]
     },
     {
+      "name": "VOWEL",
+      "controls": [
+        {
+          "param": "Vowel On",
+          "widget": "switch"
+        },
+        {
+          "param": "Vow Pos",
+          "widget": "switch"
+        },
+        {
+          "param": "Vowel A",
+          "widget": "knob",
+          "overlay": "menu"
+        },
+        {
+          "param": "Vowel B",
+          "widget": "knob",
+          "overlay": "menu"
+        },
+        {
+          "param": "Vow Mode",
+          "widget": "switch"
+        },
+        {
+          "param": "Morph",
+          "widget": "knob"
+        },
+        {
+          "param": "Vow Depth",
+          "widget": "knob"
+        },
+        {
+          "param": "Vow Glide",
+          "widget": "knob"
+        },
+        {
+          "param": "Vow Word",
+          "widget": "knob",
+          "overlay": "menu"
+        },
+        {
+          "param": "Vow Sync",
+          "widget": "knob",
+          "overlay": "menu"
+        },
+        {
+          "param": "Vow Rate",
+          "widget": "knob"
+        },
+        "empty"
+      ]
+    },
+    {
+      "name": "VOICE",
+      "controls": [
+        {
+          "param": "Gender",
+          "widget": "knob",
+          "polarity": "bipolar"
+        },
+        {
+          "param": "Vow Q",
+          "widget": "knob"
+        },
+        {
+          "param": "Vow Mix",
+          "widget": "fader"
+        },
+        {
+          "param": "Vow Char",
+          "widget": "switch"
+        }
+      ]
+    },
+    {
       "name": "RED BTN",
       "controls": [
         {

@@ -88,7 +88,7 @@ Tip: with Mix below 100% the dry signal still contains the sub, so "no clean sub
 
 - **Crush On, Ring On, Wobble On** switch their sections (CRUSH and WOBBLE pages).
 - **RED BTN page**: a big red button replaces the sound settings with a random patch; **Sanity** (Sober, Drunkish, Bat Shit Crazy) limits how wild it may be and sets a safe Output.
-- **Vowel stage** (parameters 30-44, `Vow ...`, Vowel A/B, Morph, Gender): formant filters that make vowels (OO OH UH AH AE EH EE), morphed by hand, by an LFO, by the input level (mouth follow) or by a four-step word (WOW, YAY, YO, YEAH, YOI, WAH, OOH-AAH, EOW, MAMA) in the MPC tempo; Choir, Whisper and Robot characters. The DSP is in; its UI pages and presets are being added.
+- **Vowel stage** (parameters 30-44, `Vow ...`, Vowel A/B, Morph, Gender): formant filters that make vowels (OO OH UH AH AE EH EE), morphed by hand, by an LFO, by the input level (mouth follow) or by a four-step word (WOW, YAY, YO, YEAH, YOI, WAH, OOH-AAH, EOW, MAMA) in the MPC tempo; Choir, Whisper and Robot characters. Two pages (VOWEL, VOICE) and 14 presets (Wow Bass, Yay Growl, Yo-Yo, Yeah Bass, Yoi Yoi, Talking LFO, Mouth Follow, Choir Bass, Whisper Wub, Chipmunk, Giant Talk, Robot Vowel, Alien Eow, Pre Growl). The Red Button randomizer includes the vowel stage.
 
 ## Building
 
