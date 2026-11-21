@@ -1,8 +1,12 @@
 # Bass Brutalizer
 
-by comrade fuzz. An insert effect for Akai MPC standalone (MPC OS 3.10.1+, External Plugin Support enabled).
+![Bass Brutalizer, MAIN page](docs/main-page.png)
 
-Bass destruction. The signal is split at **Split**: the low band can stay clean (scaled by **Sub**) while the rest is driven into a waveshaper, ring-modulated, bitcrushed, swept by a wobble filter and tone-filtered. An octave-down generator can thicken the sub.
+*The MAIN page, a mock-up rendered by `skin-src/make_retro_skin.py` (not a photo of the device; on the MPC the parameter names and values are drawn by the MPC itself).*
+
+Bass Brutalizer is an unholy abomination for the Akai MPC: an insert effect that takes your perfectly respectable 808, splits the clean sub away from the rest like a responsible adult, and feeds everything above it into a grinder of soft, hard, folded and rectified filth. Bitcrush it, ring-mod it, sweep it with a wobble filter, and when you run out of ideas, teach it to say "wow", "yay" and "yo" through a formant stage that has no business existing. Or give up on decisions altogether and press the big red button, which replaces every setting with a random patch at one of three sanity levels (Sober, Drunkish, Bat Shit Crazy). It wears a worn-enamel Soviet-instrument skin, because filth of this calibre deserves a proper nameplate. By comrade fuzz, probably against better advice.
+
+Needs MPC OS 3.10.1 or later with *External Plugin Support* switched on (Preferences, Enhancements). The signal is split at **Split**: the low band can stay clean (scaled by **Sub**) while the rest goes through the damage below.
 
 ## Signal flow
 
@@ -89,6 +93,12 @@ Tip: with Mix below 100% the dry signal still contains the sub, so "no clean sub
 - **Crush On, Ring On, Wobble On** switch their sections (CRUSH and WOBBLE pages).
 - **RED BTN page**: a big red button replaces the sound settings with a random patch; **Sanity** (Sober, Drunkish, Bat Shit Crazy) limits how wild it may be and sets a safe Output.
 - **Vowel stage** (parameters 30-44, `Vow ...`, Vowel A/B, Morph, Gender): formant filters that make vowels (OO OH UH AH AE EH EE), morphed by hand, by an LFO, by the input level (mouth follow) or by a four-step word (WOW, YAY, YO, YEAH, YOI, WAH, OOH-AAH, EOW, MAMA) in the MPC tempo; Choir, Whisper and Robot characters. Two pages (VOWEL, VOICE) and 14 presets (Wow Bass, Yay Growl, Yo-Yo, Yeah Bass, Yoi Yoi, Talking LFO, Mouth Follow, Choir Bass, Whisper Wub, Chipmunk, Giant Talk, Robot Vowel, Alien Eow, Pre Growl). The Red Button randomizer includes the vowel stage.
+
+How to use the vowel stage: set **Vowel On**, **Vow Pos = Post** (after the distortion; the filters need harmonics), then pick **Vow Mode**:
+- **Manual**: a fixed vowel between Vowel A and Vowel B (Morph).
+- **LFO**: sweeps between A and B (Vow Rate or Vow Sync, Vow Depth).
+- **Env**: follows the playing level relative to its recent peak: loud = B, quiet = A, so a decaying 808 closes its mouth.
+- **Step**: plays the four vowels of **Vow Word** in the MPC tempo (Vow Sync). Vow Word is used only in this mode; the controls a mode does not use are hidden on the VOWEL page.
 
 ## Building
 

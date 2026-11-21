@@ -4699,12 +4699,15 @@
                 ]
               },
               "bounds": {
-                "version": 1,
+                "version": 2,
                 "acceptsHWFocus": "Yes",
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "663 45 278 107"
+                "bounds": "663 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/2/4/Parameter 35"
+                ]
               }
             },
             {
@@ -4728,12 +4731,15 @@
                 ]
               },
               "bounds": {
-                "version": 1,
+                "version": 2,
                 "acceptsHWFocus": "Yes",
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "983 45 278 107"
+                "bounds": "983 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/2/4/Parameter 35"
+                ]
               }
             },
             {
@@ -4938,12 +4944,15 @@
                 ]
               },
               "bounds": {
-                "version": 1,
+                "version": 2,
                 "acceptsHWFocus": "Yes",
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "343 196 278 107"
+                "bounds": "343 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/2/4/Parameter 35"
+                ]
               }
             },
             {
@@ -4967,12 +4976,15 @@
                 ]
               },
               "bounds": {
-                "version": 1,
+                "version": 2,
                 "acceptsHWFocus": "Yes",
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "663 196 278 107"
+                "bounds": "663 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/1/2/4/Parameter 35"
+                ]
               }
             },
             {
@@ -5025,12 +5037,15 @@
                 ]
               },
               "bounds": {
-                "version": 1,
+                "version": 2,
                 "acceptsHWFocus": "Yes",
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "23 346 278 107"
+                "bounds": "23 346 278 107",
+                "additionalInvalidatingHandles": [
+                  "IndexedEnabling/3/4/Parameter 35"
+                ]
               }
             },
             {

@@ -111,18 +111,20 @@ int main(int argc, char** argv)
     check(a0 > 3.0 * a1, "Gender +12 moves the formants up (less energy where OO F1 used to be)");
     setn(GENDER, 0);
 
-    // ---- Env mode: with the same loud input, depth 100 opens toward vowel B and depth 0 does not
+    // ---- Env mode on a decaying hit (808 style): with depth 100 the vowel opens toward B on the loud
+    //      start and closes toward A as the note dies; with depth 0 it does not move.
     setp(VOWMODE, "Env"); setp(VOWA, "OO"); setp(VOWB, "EE"); setn(MORPH, 0); setn(VOWGLIDE, 5);
-    auto loud = [&](int n) { return 0.8f * saw(n) / 0.4f; };
+    auto hit = [&](int n) { return (float)(std::exp(-n / SR * 1.6) * saw(n)); };
+    auto brightness = [&](const std::vector<float>& v, double t0, double t1)
+    { return band(v, (size_t)(t0 * SR), (size_t)(t1 * SR), 1900, 2600) / std::max(1e-12, band(v, (size_t)(t0 * SR), (size_t)(t1 * SR), 200, 450)); };
     setn(VOWDEPTH, 0);
-    auto d0 = render(1.0, loud);
+    auto d0 = render(2.0, hit);
     setn(VOWDEPTH, 100);
-    auto d1 = render(1.0, loud);
-    size_t ea = (size_t)(0.5 * SR);
-    double h0 = band(d0, ea, d0.size(), 1900, 2600) / std::max(1e-12, band(d0, ea, d0.size(), 200, 450));
-    double h1 = band(d1, ea, d1.size(), 1900, 2600) / std::max(1e-12, band(d1, ea, d1.size(), 200, 450));
-    std::printf("INFO  high/low band ratio, loud input: depth 0 %.3f, depth 100 %.3f\n", h0, h1);
-    check(h1 > 2.0 * h0, "Mouth follow: loud input moves toward the bright vowel");
+    auto d1 = render(2.0, hit);
+    double drift0 = brightness(d0, 0.1, 0.3) / std::max(1e-12, brightness(d0, 1.0, 1.4));
+    double drift1 = brightness(d1, 0.1, 0.3) / std::max(1e-12, brightness(d1, 1.0, 1.4));
+    std::printf("INFO  brightness early/late on a decaying hit: depth 0 %.2f, depth 100 %.2f\n", drift0, drift1);
+    check(drift1 > 2.0 * drift0, "Env mode: the vowel follows the decay (opens on the loud start, closes as it dies)");
 
     // ---- Mix 0 must be transparent
     setp(VOWMODE, "Step"); setp(VOWMIX, "0");

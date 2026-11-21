@@ -698,8 +698,8 @@ PAGES = {
         "captions": ["VOWEL STAGE  (FORMANT FILTERS)", "MOTION", "WORDS & TIMING"],
         "hints": [
             "VOWELS NEED HARMONICS: USE POS = POST (AFTER THE DRIVE). PRE FILTERS THE BODY BEFORE IT IS DISTORTED.",
-            "MODE: MANUAL = MORPH KNOB  LFO = SWEEPS A TO B  ENV = LOUDER OPENS THE MOUTH  STEP = A WORD.",
-            "STEP PLAYS 4 VOWELS PER LOOP: WOW YAY YO YEAH YOI WAH OOH-AAH EOW MAMA. SYNC SETS THE STEP SPEED.",
+            "MODE: MANUAL = FIXED MORPH  LFO = SWEEPS A-B  ENV = FOLLOWS PLAYING LEVEL  STEP = PLAYS A WORD.",
+            "WORD ONLY WORKS IN STEP (4 VOWELS PER LOOP). A, B, MORPH AND DEPTH ARE HIDDEN WHEN UNUSED.",
         ],
         "page_tag": "5/7  VOWEL",
     },
@@ -848,6 +848,18 @@ def build(preview):
                     if lab:
                         lab["bounds"]["bounds"] = "%d %d %d 16" % (x + 15 + pitch * k, y + cap_y, kw)
                         lab["componentData"]["data"]["textStyle"]["font"]["height"] = 15.0
+        if name == "VOWEL" and "Vow Mode" in by_name:
+            # Show only the controls the chosen Vow Mode uses (0 Manual, 1 LFO, 2 Env, 3 Step).
+            mode_handle = by_name["Vow Mode"]["handle remapping"]["map"][0]["value"]
+            conds = {"Vow Word": "IndexedEnabling/3/4/", "Vowel A": "RangedEnabling/0/2/4/",
+                     "Vowel B": "RangedEnabling/0/2/4/", "Morph": "RangedEnabling/0/2/4/",
+                     "Vow Depth": "RangedEnabling/1/2/4/"}
+            for c in comps:
+                prefix = conds.get(c["componentData"]["name"])
+                if prefix:
+                    c["bounds"]["version"] = 2
+                    c["bounds"]["showWhenDataModelInvalid"] = "Hide"
+                    c["bounds"]["additionalInvalidatingHandles"] = [prefix + mode_handle]
         if name == "RED BTN":
             tab["qlinkBoundsData"] = ["40 50 910 380"]
     restyle_text(pd)

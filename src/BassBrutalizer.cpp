@@ -138,7 +138,7 @@ constexpr int kNumVowels = 7;   // OO OH UH AH AE EH EE
 constexpr Formant kVowels[kNumVowels] = {
     {300, 870, 2240}, {500, 830, 2500}, {640, 1190, 2390}, {730, 1090, 2440},
     {660, 1720, 2410}, {530, 1840, 2480}, {270, 2290, 3010}};
-constexpr float kFormGain[3] = {1.0f, 0.75f, 0.45f};
+constexpr float kFormGain[3] = {1.0f, 0.9f, 0.6f};
 constexpr int kNumWords = 9;
 constexpr int kWords[kNumWords][4] = {
     {0, 3, 1, 0},   // WOW      oo ah oh oo
@@ -210,8 +210,8 @@ struct PS
     float bits = 16, dec = 1, ring = 0, ringHz = 150, oct = 0, tilt = 0, multi = 0, hiSplit = 3000, hiDrv = 0;
     float wobPos = kWobOff, wobRate = 2, wobDepth = 50, wobFreq = 600, wobReso = 40, wobShape = 0, wobSync = 0;
     float crushOn = 1, ringOn = 1, wobOn = 1;
-    float vowOn = 1, vowPos = 0, vowA = 0, vowB = 3, vowMorph = 0, vowMode = 0, vowRate = 2, vowSync = 0, vowDepth = 70,
-          vowGlide = 25, vowWord = 0, gender = 0, vowQ = 60, vowMix = 100, vowChar = 0;
+    float vowOn = 1, vowPos = 0, vowA = 0, vowB = 3, vowMorph = 0, vowMode = 3, vowRate = 2, vowSync = 0, vowDepth = 70,
+          vowGlide = 25, vowWord = 0, gender = 0, vowQ = 70, vowMix = 100, vowChar = 0;
 
     // vowel stage: pos 0 Off / 1 Pre / 2 Post; mode 0 Manual / 1 LFO / 2 Env / 3 Step
     PS& Vow(float pos, float modeIdx, float word, float syncIdx, float rate = 2)
@@ -300,7 +300,7 @@ public:
         addParam(mpc::choiceParam("vowa",     "Vowel A",   vowelNames, 0));
         addParam(mpc::choiceParam("vowb",     "Vowel B",   vowelNames, 3));
         addParam(mpc::floatParam ("vowmorph", "Morph",     0.0f, 100.0f, 0.0f,  "%",  0));
-        addParam(mpc::choiceParam("vowmode",  "Vow Mode",  {"Manual", "LFO", "Env", "Step"}, 0));
+        addParam(mpc::choiceParam("vowmode",  "Vow Mode",  {"Manual", "LFO", "Env", "Step"}, 3));
         addParam(mpc::logParam   ("vowrate",  "Vow Rate",  0.1f, 20.0f,  2.0f,  "Hz", 2));
         {
             std::vector<std::string> names{"Free"};
@@ -312,7 +312,7 @@ public:
         addParam(mpc::choiceParam("vowword",  "Vow Word",
                                   {"WOW", "YAY", "YO", "YEAH", "YOI", "WAH", "OOH-AAH", "EOW", "MAMA"}, 0));
         addParam(mpc::floatParam ("gender",   "Gender",    -12.0f, 12.0f, 0.0f, "st", 1));
-        addParam(mpc::floatParam ("vowq",     "Vow Q",     0.0f, 100.0f, 60.0f, "%",  0));
+        addParam(mpc::floatParam ("vowq",     "Vow Q",     0.0f, 100.0f, 70.0f, "%",  0));
         addParam(mpc::floatParam ("vowmix",   "Vow Mix",   0.0f, 100.0f, 100.0f, "%", 0));
         addParam(mpc::choiceParam("vowchar",  "Vow Char",  {"Normal", "Choir", "Whisper", "Robot"}, 0));
 
@@ -363,6 +363,23 @@ public:
         addProgram2("Robot Vowel",    PS().Out(-5).Drv(28).Mode(kHard).Split(80).Sub(50).Tone(8000).Vow(2, 3, 6, 8).Voice(0, 60, 100, 3, 5));
         addProgram2("Alien Eow",      PS().Out(-10).Drv(34).Mode(kFold).Split(80).Sub(30).Tone(9000).Vow(2, 3, 7, 8).Voice(5, 80, 100, 0, 40));
         addProgram2("Pre Growl",      PS().Out(-6).Drv(36).Mode(kHard).Split(80).Sub(40).Tone(8000).Vow(1, 1, 0, 11).VowAB(0, 3, 50, 100));
+
+        // --- found by the Red Button (Bat Shit Crazy) and kept; values copied from the user's saved presets ---
+        {
+            PS p;
+            p.out = -10.4f; p.drv = 28.6f; p.mode = kFold; p.bias = 2.6f; p.split = 40.5f; p.sub = 21.4f; p.tone = 3661.0f; p.mix = 79.8f;
+            p.ring = 43.8f; p.ringHz = 334.8f; p.tilt = 0.8f; p.hiSplit = 1393.7f; p.hiDrv = 9.1f;
+            p.wobPos = kWobPost; p.wobRate = 0.586f; p.wobDepth = 83.7f; p.wobFreq = 1364.7f; p.wobReso = 77.2f; p.wobShape = 0; p.wobSync = 11;
+            p.crushOn = 0;   // Bits and Decimate are inactive in this one
+            addProgram2("Moving Harmonics", p);
+        }
+        {
+            PS p;
+            p.out = -10.2f; p.drv = 26.9f; p.mode = kSoft; p.bias = 24.6f; p.split = 34.5f; p.sub = 25.8f; p.tone = 2955.0f; p.mix = 96.6f;
+            p.bits = 2; p.dec = 2.99f; p.ring = 14.6f; p.ringHz = 662.6f; p.oct = 77.5f; p.tilt = 1.8f; p.hiSplit = 2216.9f; p.hiDrv = 8.3f;
+            p.wobPos = kWobPre; p.wobRate = 0.108f; p.wobDepth = 73.9f; p.wobFreq = 168.4f; p.wobReso = 57.2f; p.wobShape = 1; p.wobSync = 16;
+            addProgram2("Total Filth", p);
+        }
     }
 
     void prepare(double sampleRate, int maxBlockSize) override
@@ -380,6 +397,7 @@ public:
         }
         envAtk_ = 1.0f - std::exp(-1.0f / (0.005f * (float)sampleRate));
         envRel_ = 1.0f - std::exp(-1.0f / (0.12f * (float)sampleRate));
+        peakDecay_ = std::exp(-1.0f / (4.0f * (float)sampleRate));   // the peak reference forgets over about 4 s
         lfoV_.setSampleRate(sampleRate);
         octDecay_ = std::exp(-1.0f / (0.05f * (float)sampleRate));
         lfo_.setSampleRate(sampleRate);
@@ -399,7 +417,7 @@ public:
         wobCount_ = 0;
         lfo_.reset(0.0f);
         lfoV_.reset(0.0f);
-        vEnv_ = 0.0f; vCount_ = 0; stepPhase_ = 0.0f; stepIdx_ = 0; vSnap_ = true;
+        vEnv_ = 0.0f; vPeak_ = 0.0f; vCount_ = 0; stepPhase_ = 0.0f; stepIdx_ = 0; vSnap_ = true;
         drive_.snap(mpc::dsp::dbToGain(get(kDrive)));
         bias_.snap(get(kBias) * 0.01f);
         sub_.snap(get(kSub) * 0.01f);
@@ -556,6 +574,10 @@ public:
                 }
                 a *= numChannels > 0 ? 1.0f / (float)numChannels : 0.0f;
                 vEnv_ += (a > vEnv_ ? envAtk_ : envRel_) * (a - vEnv_);
+                // Env mode follows the level RELATIVE to the recent peak, so it works at any input level:
+                // the louder part of a note (or a decaying 808) opens toward vowel B, the quiet part closes to A.
+                vPeak_ = std::max(vEnv_, vPeak_ * peakDecay_);
+                const float envNorm = mpc::clamp(vEnv_ / std::max(vPeak_, 0.01f), 0.0f, 1.0f);
                 stepPhase_ += stepInc;
                 if (stepPhase_ >= 1.0f) { stepPhase_ -= 1.0f; stepIdx_ = (stepIdx_ + 1) & 3; }
                 const float lv = vowModeSel == 1 ? lfoV_.process() : 0.0f;
@@ -574,7 +596,7 @@ public:
                     {
                         float m = vowMorph;
                         if (vowModeSel == 1)      m += vowDepth * lv;
-                        else if (vowModeSel == 2) m += vowDepth * mpc::clamp(vEnv_ * 2.0f, 0.0f, 1.0f);
+                        else if (vowModeSel == 2) m += vowDepth * envNorm;
                         m = mpc::clamp(m, 0.0f, 1.0f);
                         if (vowChar == 3) m = m < 0.5f ? 0.0f : 1.0f;   // Robot: snap to a vowel
                         const Formant& fa = kVowels[vowA];
@@ -853,7 +875,7 @@ private:
     std::atomic<bool>  redResetPending_{false};
     mpc::dsp::LFO      lfoV_;                 // vowel LFO
     float              vFsm_[3] = {300.0f, 870.0f, 2240.0f};   // smoothed formant frequencies
-    float              vEnv_ = 0.0f, envAtk_ = 0.01f, envRel_ = 0.0002f;
+    float              vEnv_ = 0.0f, vPeak_ = 0.0f, envAtk_ = 0.01f, envRel_ = 0.0002f, peakDecay_ = 0.99999f;
     float              stepPhase_ = 0.0f;
     int                stepIdx_ = 0;
     unsigned           vCount_ = 0;
