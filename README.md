@@ -1,12 +1,23 @@
 # Bass Brutalizer
 
-![Bass Brutalizer, MAIN page](docs/main-page.png)
+![Bass Brutalizer screens: an animated carousel of every page](docs/screens.gif)
 
-*The MAIN page, a mock-up rendered by `skin-src/make_retro_skin.py` (not a photo of the device; on the MPC the parameter names and values are drawn by the MPC itself).*
+*Every screen, 2.5 seconds each (the animation loops). These are mock-ups rendered by `skin-src/make_retro_skin.py`, not photos of the device: on the MPC the parameter names and values are drawn by the MPC itself. A still gallery is under [Screens](#screens).*
 
 Bass Brutalizer is an unholy abomination for the Akai MPC: an insert effect that takes your perfectly respectable 808, splits the clean sub away from the rest like a responsible adult, and feeds everything above it into a grinder of soft, hard, folded and rectified filth. Bitcrush it, ring-mod it, sweep it with a wobble filter, and when you run out of ideas, teach it to say "wow", "yay" and "yo" through a formant stage that has no business existing. Or give up on decisions altogether and press the big red button, which replaces every setting with a random patch at one of three sanity levels (Sober, Drunkish, Bat Shit Crazy). It wears a worn-enamel Soviet-instrument skin, because filth of this calibre deserves a proper nameplate. By comrade fuzz, probably against better advice.
 
 Needs MPC OS 3.10.1 or later with *External Plugin Support* switched on (Preferences, Enhancements). The signal is split at **Split**: the low band can stay clean (scaled by **Sub**) while the rest goes through the damage below.
+
+## Screens
+
+Six function keys; the VOWEL key has four screens (press it again to page through them, the dots under its name show which one is open).
+
+<table>
+<tr><td align="center"><a href="docs/screens/01-main.png"><img src="docs/screens/01-main.png" width="300" alt="MAIN"></a><br><sub>MAIN</sub></td><td align="center"><a href="docs/screens/02-band.png"><img src="docs/screens/02-band.png" width="300" alt="BAND"></a><br><sub>BAND</sub></td><td align="center"><a href="docs/screens/03-crush.png"><img src="docs/screens/03-crush.png" width="300" alt="CRUSH"></a><br><sub>CRUSH</sub></td></tr>
+<tr><td align="center"><a href="docs/screens/04-wobble.png"><img src="docs/screens/04-wobble.png" width="300" alt="WOBBLE"></a><br><sub>WOBBLE</sub></td><td align="center"><a href="docs/screens/05-vowel.png"><img src="docs/screens/05-vowel.png" width="300" alt="VOWEL 1/4"></a><br><sub>VOWEL 1/4</sub></td><td align="center"><a href="docs/screens/06-words.png"><img src="docs/screens/06-words.png" width="300" alt="WORDS 2/4"></a><br><sub>WORDS 2/4</sub></td></tr>
+<tr><td align="center"><a href="docs/screens/06b-words-inactive.png"><img src="docs/screens/06b-words-inactive.png" width="300" alt="WORDS 2/4, mode not Word"></a><br><sub>WORDS 2/4, mode not Word</sub></td><td align="center"><a href="docs/screens/07-voice.png"><img src="docs/screens/07-voice.png" width="300" alt="VOICE 3/4"></a><br><sub>VOICE 3/4</sub></td><td align="center"><a href="docs/screens/08-adsr.png"><img src="docs/screens/08-adsr.png" width="300" alt="ADSR 4/4"></a><br><sub>ADSR 4/4</sub></td></tr>
+<tr><td align="center"><a href="docs/screens/08b-adsr-inactive.png"><img src="docs/screens/08b-adsr-inactive.png" width="300" alt="ADSR 4/4, mode without ADSR"></a><br><sub>ADSR 4/4, mode without ADSR</sub></td><td align="center"><a href="docs/screens/09-red-button.png"><img src="docs/screens/09-red-button.png" width="300" alt="RED BTN"></a><br><sub>RED BTN</sub></td></tr>
+</table>
 
 ## Signal flow
 
@@ -68,13 +79,18 @@ out = dry + (wet * Output - dry) * Mix
 | Wob Shape | Sine/Tri/Saw/Square | LFO shape |
 | Wob Sync  | Free, 1/64 ... 2/1 | Free = Wob Rate in Hz, otherwise locked to the MPC tempo. Needs the MPC transport to report tempo (defaults to 120 bpm) |
 
-## Programs (25)
+## Programs (70)
 
 808 and sub: Init, 808 Warm, 808 Crunch, 808 Octave, 808 Destroyed, 808 Dirty Crush, Sub Saturator.
 Mid growl: Growl Mid, Reese Rot, Octave Fizz, Acid Bite, Talking Bass.
 Dubstep wobble (tempo synced): Wobble 1/4, Wobble 1/8 Tri, Wobble Square, Triplet Wub, Dub Digital.
 Metallic: Robot Ring, Metal Bass.
 Extreme: Parallel Smash, Broken Speaker, Bright Fold, Chainsaw, Lo-Fi Grit, Wall Of Noise.
+Vowels (one word per hit): YOY Hit, YOI Hit, Yeah Hit, Wow Hit, Yo Hit, Laser Yoi, Hit And Hold, Chipmunk Hit, Robot Hit.
+Vowels (looping words): Wow Bass, Yay Growl, Yo-Yo, Yeah Bass, Yoi Yoi, Whisper Wub, Chipmunk, Giant Talk, Robot Vowel, Alien Eow, Dr Wub, Vowel Run, Whisper Talk, Giant Yeah, Pre Talk, Pre Growl.
+Vowels (LFO sweeps): Talking LFO, Choir Bass, Wah Pedal, Growl ER, U-Umlaut Wobble, Russian Yi, Alien Choir, Choir Ahh.
+Vowels (ADSR, each hit opens the mouth): Hit Opens, Vowel Bounce, Chomp, Mouth Pump, Closing Door.
+Found with the Red Button (Bat Shit Crazy) and kept: Moving Harmonics, Total Filth, Dancing Dervish, Resonant Wobble, Doomsday Radio, Enough, RLY.
 
 Tip: with Mix below 100% the dry signal still contains the sub, so "no clean sub" means Sub = 0 and Mix = 100%.
 
@@ -92,13 +108,15 @@ Tip: with Mix below 100% the dry signal still contains the sub, so "no clean sub
 
 - **Crush On, Ring On, Wobble On** switch their sections (CRUSH and WOBBLE pages).
 - **RED BTN page**: a big red button replaces the sound settings with a random patch; **Sanity** (Sober, Drunkish, Bat Shit Crazy) limits how wild it may be and sets a safe Output.
-- **Vowel stage** (parameters 30-44, `Vow ...`, Vowel A/B, Morph, Gender): formant filters that make vowels (OO OH UH AH AE EH EE), morphed by hand, by an LFO, by the input level (mouth follow) or by a four-step word (WOW, YAY, YO, YEAH, YOI, WAH, OOH-AAH, EOW, MAMA) in the MPC tempo; Choir, Whisper and Robot characters. Two pages (VOWEL, VOICE) and 14 presets (Wow Bass, Yay Growl, Yo-Yo, Yeah Bass, Yoi Yoi, Talking LFO, Mouth Follow, Choir Bass, Whisper Wub, Chipmunk, Giant Talk, Robot Vowel, Alien Eow, Pre Growl). The Red Button randomizer includes the vowel stage.
+- **Vowel stage** (parameters 30-57): formant filters that make vowels. 15 vowels (OO OH UH AH AE EH EE IH AW ER UE OE YI W L; UE and OE are the German umlauts, YI is the Russian "y"), moved between two of them by hand, an LFO or an ADSR, or as a **word**: a smooth glide through four key vowels (WOW, YAY, YO, YOY, YEAH, YOI, WAH, OOH-AAH, EOW, MAMA, or CUSTOM from Step 1-4). Gender shifts every formant; Choir, Whisper and Robot are alternative voices. Four screens on one key: VOWEL, WORDS, VOICE, ADSR. The Red Button randomizer includes the vowel stage.
 
-How to use the vowel stage: set **Vowel On**, **Vow Pos = Post** (after the distortion; the filters need harmonics), then pick **Vow Mode**:
-- **Manual**: a fixed vowel between Vowel A and Vowel B (Morph).
-- **LFO**: sweeps between A and B (Vow Rate or Vow Sync, Vow Depth).
-- **Env**: follows the playing level relative to its recent peak: loud = B, quiet = A, so a decaying 808 closes its mouth.
-- **Step**: plays the four vowels of **Vow Word** in the MPC tempo (Vow Sync). Vow Word is used only in this mode; the controls a mode does not use are hidden on the VOWEL page.
+How to use it: set **Vowel On**, **Vow Pos = Post** (after the distortion; the filters need harmonics), then pick **Vow Mode**:
+- **Manual**: a fixed vowel between Vowel A and Vowel B (Morph). The sound starts on A and moves toward B.
+- **LFO**: sweeps between A and B (Vow Sync as a note length, or Vow Rate in Hz when Vow Sync = Hz; Vow Depth).
+- **ADSR**: every hit (a sudden rise in level, found by the hit detector) opens the vowel from A toward B with the ADSR on the ADSR screen. **Sens** sets how easily a rise counts as a hit, **Gap** the minimum time between two hits (raise it if one hit fires twice), **Hold** a fixed note length (0 = until the level has fallen about 18 dB).
+- **Word**: plays the word chosen on the WORDS screen. **Vow Trig = Loop** repeats it with the tempo, **Hit** plays it once per hit. **Word Env** lets the ADSR also shape the amount of the effect on a hit word. **Vow Sync** is the length of one word.
+
+Screens and controls that the current mode does not use are hidden, with a hint on top of the screen.
 
 ## Building
 

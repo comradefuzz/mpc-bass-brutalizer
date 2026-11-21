@@ -178,11 +178,20 @@
         {
           "param": "Vow Glide",
           "widget": "knob"
-        },
+        }
+      ]
+    },
+    {
+      "name": "WORDS",
+      "controls": [
         {
           "param": "Vow Word",
           "widget": "knob",
           "overlay": "menu"
+        },
+        {
+          "param": "Vow Trig",
+          "widget": "switch"
         },
         {
           "param": "Vow Sync",
@@ -193,7 +202,26 @@
           "param": "Vow Rate",
           "widget": "knob"
         },
-        "empty"
+        {
+          "param": "Step 1",
+          "widget": "knob",
+          "overlay": "menu"
+        },
+        {
+          "param": "Step 2",
+          "widget": "knob",
+          "overlay": "menu"
+        },
+        {
+          "param": "Step 3",
+          "widget": "knob",
+          "overlay": "menu"
+        },
+        {
+          "param": "Step 4",
+          "widget": "knob",
+          "overlay": "menu"
+        }
       ]
     },
     {
@@ -214,6 +242,43 @@
         },
         {
           "param": "Vow Char",
+          "widget": "switch"
+        }
+      ]
+    },
+    {
+      "name": "ADSR",
+      "controls": [
+        {
+          "param": "Attack",
+          "widget": "knob"
+        },
+        {
+          "param": "Decay",
+          "widget": "knob"
+        },
+        {
+          "param": "Sustain",
+          "widget": "fader"
+        },
+        {
+          "param": "Release",
+          "widget": "knob"
+        },
+        {
+          "param": "Sens",
+          "widget": "knob"
+        },
+        {
+          "param": "Hold",
+          "widget": "knob"
+        },
+        {
+          "param": "Gap",
+          "widget": "knob"
+        },
+        {
+          "param": "Word Env",
           "widget": "switch"
         }
       ]

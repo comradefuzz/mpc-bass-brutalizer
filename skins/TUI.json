@@ -1382,6 +1382,167 @@
           }
         },
         {
+          "key": "radio2",
+          "value": {
+            "version": 2,
+            "actions": [
+              {
+                "version": 1,
+                "onAction": "Mouse Down",
+                "handler": "Q-Link",
+                "handleName": "Data",
+                "additionalData": ""
+              },
+              {
+                "version": 1,
+                "onAction": "Enter Pressed",
+                "handler": "Show Overlay",
+                "handleName": "Data",
+                "additionalData": "knob overlay"
+              }
+            ],
+            "backgroundData": {
+              "version": 1,
+              "focussed": {
+                "version": 1,
+                "colour": "00000000",
+                "image": ""
+              },
+              "unfocussed": {
+                "version": 1,
+                "colour": "00000000",
+                "image": ""
+              }
+            },
+            "ignoreMousePresses": false,
+            "disableCoarseDataWheel": false,
+            "componentsData": [
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "focus",
+                  "type": "Focus",
+                  "data": {
+                    "version": 1,
+                    "backgroundColour": "19ffffff",
+                    "outlineColour": "ffd31145",
+                    "backgroundInset": 4.0,
+                    "outlineThickness": 1.0
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "WhenFocussed",
+                  "boundsType": "Absolute",
+                  "bounds": "0 0 278 107"
+                }
+              },
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "name",
+                  "type": "Label",
+                  "data": {
+                    "version": 1,
+                    "textStyle": {
+                      "version": 1,
+                      "font": {
+                        "version": 1,
+                        "name": "Titillium Web",
+                        "style": "Regular",
+                        "height": 24.0
+                      },
+                      "colour": "ffc8bd92",
+                      "justification": "left",
+                      "case": "Original"
+                    },
+                    "type": "Name",
+                    "handleName": "Data"
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "Always",
+                  "boundsType": "Absolute",
+                  "bounds": "15 8 248 34"
+                }
+              },
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "seg 0",
+                  "type": "Button",
+                  "data": {
+                    "version": 2,
+                    "onImage": "seg2_on.png",
+                    "offImage": "seg2_off.png",
+                    "buttonId": 0,
+                    "numButtonsInGroup": 2,
+                    "handleName": "Data",
+                    "gestureBehaviour": "Instant"
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "Always",
+                  "boundsType": "Absolute",
+                  "bounds": "15 54 122 40"
+                }
+              },
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "seg 1",
+                  "type": "Button",
+                  "data": {
+                    "version": 2,
+                    "onImage": "seg2_on.png",
+                    "offImage": "seg2_off.png",
+                    "buttonId": 1,
+                    "numButtonsInGroup": 2,
+                    "handleName": "Data",
+                    "gestureBehaviour": "Instant"
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "Always",
+                  "boundsType": "Absolute",
+                  "bounds": "141 54 122 40"
+                }
+              }
+            ]
+          }
+        },
+        {
           "key": "knob overlay",
           "value": {
             "version": 2,
@@ -2468,6 +2629,167 @@
           }
         },
         {
+          "key": "radio2Trig",
+          "value": {
+            "version": 2,
+            "actions": [
+              {
+                "version": 1,
+                "onAction": "Mouse Down",
+                "handler": "Q-Link",
+                "handleName": "Data",
+                "additionalData": ""
+              },
+              {
+                "version": 1,
+                "onAction": "Enter Pressed",
+                "handler": "Show Overlay",
+                "handleName": "Data",
+                "additionalData": "knob overlay"
+              }
+            ],
+            "backgroundData": {
+              "version": 1,
+              "focussed": {
+                "version": 1,
+                "colour": "00000000",
+                "image": ""
+              },
+              "unfocussed": {
+                "version": 1,
+                "colour": "00000000",
+                "image": ""
+              }
+            },
+            "ignoreMousePresses": false,
+            "disableCoarseDataWheel": false,
+            "componentsData": [
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "focus",
+                  "type": "Focus",
+                  "data": {
+                    "version": 1,
+                    "backgroundColour": "19ffffff",
+                    "outlineColour": "ffd31145",
+                    "backgroundInset": 4.0,
+                    "outlineThickness": 1.0
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "WhenFocussed",
+                  "boundsType": "Absolute",
+                  "bounds": "0 0 278 107"
+                }
+              },
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "name",
+                  "type": "Label",
+                  "data": {
+                    "version": 1,
+                    "textStyle": {
+                      "version": 1,
+                      "font": {
+                        "version": 1,
+                        "name": "Titillium Web",
+                        "style": "Regular",
+                        "height": 24.0
+                      },
+                      "colour": "ffc8bd92",
+                      "justification": "left",
+                      "case": "Original"
+                    },
+                    "type": "Name",
+                    "handleName": "Data"
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "Always",
+                  "boundsType": "Absolute",
+                  "bounds": "15 8 248 34"
+                }
+              },
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "seg 0",
+                  "type": "Button",
+                  "data": {
+                    "version": 2,
+                    "onImage": "trig_0_on.png",
+                    "offImage": "trig_0_off.png",
+                    "buttonId": 0,
+                    "numButtonsInGroup": 2,
+                    "handleName": "Data",
+                    "gestureBehaviour": "Instant"
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "Always",
+                  "boundsType": "Absolute",
+                  "bounds": "15 46 122 42"
+                }
+              },
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "seg 1",
+                  "type": "Button",
+                  "data": {
+                    "version": 2,
+                    "onImage": "trig_1_on.png",
+                    "offImage": "trig_1_off.png",
+                    "buttonId": 1,
+                    "numButtonsInGroup": 2,
+                    "handleName": "Data",
+                    "gestureBehaviour": "Instant"
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "Always",
+                  "boundsType": "Absolute",
+                  "bounds": "141 46 122 42"
+                }
+              }
+            ]
+          }
+        },
+        {
           "key": "radio4VMode",
           "value": {
             "version": 2,
@@ -3052,7 +3374,15 @@
           "AH",
           "AE",
           "EH",
-          "EE"
+          "EE",
+          "IH",
+          "AW",
+          "ER",
+          "UE",
+          "OE",
+          "YI",
+          "W",
+          "L"
         ]
       },
       {
@@ -3064,7 +3394,15 @@
           "AH",
           "AE",
           "EH",
-          "EE"
+          "EE",
+          "IH",
+          "AW",
+          "ER",
+          "UE",
+          "OE",
+          "YI",
+          "W",
+          "L"
         ]
       },
       {
@@ -3072,14 +3410,14 @@
         "value": [
           "Manual",
           "LFO",
-          "Env",
-          "Step"
+          "ADSR",
+          "Word"
         ]
       },
       {
         "key": "Parameter 37",
         "value": [
-          "Free",
+          "Hz",
           "1/64",
           "1/32T",
           "1/32",
@@ -3105,12 +3443,14 @@
           "WOW",
           "YAY",
           "YO",
+          "YOY",
           "YEAH",
           "YOI",
           "WAH",
           "OOH-AAH",
           "EOW",
-          "MAMA"
+          "MAMA",
+          "CUSTOM"
         ]
       },
       {
@@ -3120,6 +3460,100 @@
           "Choir",
           "Whisper",
           "Robot"
+        ]
+      },
+      {
+        "key": "Parameter 45",
+        "value": [
+          "Loop",
+          "Hit"
+        ]
+      },
+      {
+        "key": "Parameter 46",
+        "value": [
+          "OO",
+          "OH",
+          "UH",
+          "AH",
+          "AE",
+          "EH",
+          "EE",
+          "IH",
+          "AW",
+          "ER",
+          "UE",
+          "OE",
+          "YI",
+          "W",
+          "L"
+        ]
+      },
+      {
+        "key": "Parameter 47",
+        "value": [
+          "OO",
+          "OH",
+          "UH",
+          "AH",
+          "AE",
+          "EH",
+          "EE",
+          "IH",
+          "AW",
+          "ER",
+          "UE",
+          "OE",
+          "YI",
+          "W",
+          "L"
+        ]
+      },
+      {
+        "key": "Parameter 48",
+        "value": [
+          "OO",
+          "OH",
+          "UH",
+          "AH",
+          "AE",
+          "EH",
+          "EE",
+          "IH",
+          "AW",
+          "ER",
+          "UE",
+          "OE",
+          "YI",
+          "W",
+          "L"
+        ]
+      },
+      {
+        "key": "Parameter 49",
+        "value": [
+          "OO",
+          "OH",
+          "UH",
+          "AH",
+          "AE",
+          "EH",
+          "EE",
+          "IH",
+          "AW",
+          "ER",
+          "UE",
+          "OE",
+          "YI",
+          "W",
+          "L"
+        ]
+      },
+      {
+        "key": "Parameter 56",
+        "value": [
+          "Off",
+          "On"
         ]
       }
     ],
@@ -4869,7 +5303,7 @@
                   },
                   "type": "Text",
                   "handleName": "Data",
-                  "text": "Env"
+                  "text": "ADSR"
                 }
               },
               "handle remapping": {
@@ -4907,7 +5341,7 @@
                   },
                   "type": "Text",
                   "handleName": "Data",
-                  "text": "Step"
+                  "text": "Word"
                 }
               },
               "handle remapping": {
@@ -5015,7 +5449,38 @@
                 "boundsType": "Absolute",
                 "bounds": "983 196 278 107"
               }
+            }
+          ]
+        },
+        "qlinkBoundsData": [
+          "13 35 1258 127",
+          "13 186 1258 127"
+        ]
+      },
+      {
+        "version": 1,
+        "tabName": "WORDS",
+        "fnKeyIndex": 4,
+        "fnKeySubIndex": 1,
+        "componentDefinition": {
+          "version": 2,
+          "actions": [],
+          "backgroundData": {
+            "version": 1,
+            "focussed": {
+              "version": 1,
+              "colour": "ff2c352b",
+              "image": "bg_words.png"
             },
+            "unfocussed": {
+              "version": 1,
+              "colour": "ff2c352b",
+              "image": "bg_words.png"
+            }
+          },
+          "ignoreMousePresses": false,
+          "disableCoarseDataWheel": false,
+          "componentsData": [
             {
               "version": 2,
               "componentData": {
@@ -5042,10 +5507,118 @@
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "23 346 278 107",
+                "bounds": "23 45 278 107",
                 "additionalInvalidatingHandles": [
                   "IndexedEnabling/3/4/Parameter 35"
                 ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Vow Trig",
+                "type": "radio2Trig",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 45"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "343 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "IndexedEnabling/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Vow Trig seg 0",
+                "type": "Label",
+                "data": {
+                  "version": 1,
+                  "textStyle": {
+                    "version": 1,
+                    "font": {
+                      "version": 1,
+                      "name": "Titillium Web",
+                      "style": "Regular",
+                      "height": 15.0
+                    },
+                    "colour": "ffe6dcb4",
+                    "justification": "horizontallyCentred verticallyCentred",
+                    "case": "Original"
+                  },
+                  "type": "Text",
+                  "handleName": "Data",
+                  "text": "Loop"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": []
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "No",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "358 135 122 16"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Vow Trig seg 1",
+                "type": "Label",
+                "data": {
+                  "version": 1,
+                  "textStyle": {
+                    "version": 1,
+                    "font": {
+                      "version": 1,
+                      "name": "Titillium Web",
+                      "style": "Regular",
+                      "height": 15.0
+                    },
+                    "colour": "ffe6dcb4",
+                    "justification": "horizontallyCentred verticallyCentred",
+                    "case": "Original"
+                  },
+                  "type": "Text",
+                  "handleName": "Data",
+                  "text": "Hit"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": []
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "No",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "484 135 122 16"
               }
             },
             {
@@ -5074,7 +5647,7 @@
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "343 346 278 107"
+                "bounds": "663 45 278 107"
               }
             },
             {
@@ -5098,27 +5671,280 @@
                 ]
               },
               "bounds": {
-                "version": 1,
+                "version": 2,
                 "acceptsHWFocus": "Yes",
                 "showWhenDataModelInvalid": "Hide",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "663 346 278 107"
+                "bounds": "983 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "IndexedEnabling/0/18/Parameter 37"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Step 1",
+                "type": "knobUniMenu",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 46"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "23 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "IndexedEnabling/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Step 2",
+                "type": "knobUniMenu",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 47"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "343 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "IndexedEnabling/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Step 3",
+                "type": "knobUniMenu",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 48"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "663 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "IndexedEnabling/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Step 4",
+                "type": "knobUniMenu",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 49"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "983 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "IndexedEnabling/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "hint off 1",
+                "type": "Label",
+                "data": {
+                  "version": 1,
+                  "textStyle": {
+                    "version": 1,
+                    "font": {
+                      "version": 1,
+                      "name": "Titillium Web",
+                      "style": "Regular",
+                      "height": 32.0
+                    },
+                    "colour": "ffe6dcb4",
+                    "justification": "horizontallyCentred verticallyCentred",
+                    "case": "Original"
+                  },
+                  "type": "Text",
+                  "handleName": "Data",
+                  "text": "WORD IS OFF IN THIS MODE"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": []
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "No",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "40 66 600 44",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/2/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "hint off 2",
+                "type": "Label",
+                "data": {
+                  "version": 1,
+                  "textStyle": {
+                    "version": 1,
+                    "font": {
+                      "version": 1,
+                      "name": "Titillium Web",
+                      "style": "Regular",
+                      "height": 24.0
+                    },
+                    "colour": "ffe6dcb4",
+                    "justification": "horizontallyCentred verticallyCentred",
+                    "case": "Original"
+                  },
+                  "type": "Text",
+                  "handleName": "Data",
+                  "text": "SET VOW MODE = WORD"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": []
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "No",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "40 116 600 34",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/2/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "hint off 3",
+                "type": "Label",
+                "data": {
+                  "version": 1,
+                  "textStyle": {
+                    "version": 1,
+                    "font": {
+                      "version": 1,
+                      "name": "Titillium Web",
+                      "style": "Regular",
+                      "height": 24.0
+                    },
+                    "colour": "ffe6dcb4",
+                    "justification": "horizontallyCentred verticallyCentred",
+                    "case": "Original"
+                  },
+                  "type": "Text",
+                  "handleName": "Data",
+                  "text": "THE CUSTOM STEPS ARE HIDDEN TOO"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": []
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "No",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "40 222 1200 40",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/2/4/Parameter 35"
+                ]
               }
             }
           ]
         },
         "qlinkBoundsData": [
           "13 35 1258 127",
-          "13 186 1258 127",
-          "13 336 938 127"
+          "13 186 1258 127"
         ]
       },
       {
         "version": 1,
         "tabName": "VOICE",
-        "fnKeyIndex": 5,
-        "fnKeySubIndex": 0,
+        "fnKeyIndex": 4,
+        "fnKeySubIndex": 2,
         "componentDefinition": {
           "version": 2,
           "actions": [],
@@ -5414,8 +6240,377 @@
       },
       {
         "version": 1,
+        "tabName": "ADSR",
+        "fnKeyIndex": 4,
+        "fnKeySubIndex": 3,
+        "componentDefinition": {
+          "version": 2,
+          "actions": [],
+          "backgroundData": {
+            "version": 1,
+            "focussed": {
+              "version": 1,
+              "colour": "ff2c352b",
+              "image": "bg_adsr.png"
+            },
+            "unfocussed": {
+              "version": 1,
+              "colour": "ff2c352b",
+              "image": "bg_adsr.png"
+            }
+          },
+          "ignoreMousePresses": false,
+          "disableCoarseDataWheel": false,
+          "componentsData": [
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Attack",
+                "type": "knobUni",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 50"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "23 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Decay",
+                "type": "knobUni",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 51"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "343 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Sustain",
+                "type": "faderUni",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 52"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "663 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Release",
+                "type": "knobUni",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 53"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "983 45 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Sens",
+                "type": "knobUni",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 54"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "23 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Hold",
+                "type": "knobUni",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 55"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "343 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Gap",
+                "type": "knobUni",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 57"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "663 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "Word Env",
+                "type": "toggle",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 56"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "983 196 278 107",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/2/3/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "hint off 1",
+                "type": "Label",
+                "data": {
+                  "version": 1,
+                  "textStyle": {
+                    "version": 1,
+                    "font": {
+                      "version": 1,
+                      "name": "Titillium Web",
+                      "style": "Regular",
+                      "height": 38.0
+                    },
+                    "colour": "ffe6dcb4",
+                    "justification": "horizontallyCentred verticallyCentred",
+                    "case": "Original"
+                  },
+                  "type": "Text",
+                  "handleName": "Data",
+                  "text": "ADSR IS OFF IN THIS MODE"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": []
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "No",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "40 70 1200 48",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/1/4/Parameter 35"
+                ]
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "hint off 2",
+                "type": "Label",
+                "data": {
+                  "version": 1,
+                  "textStyle": {
+                    "version": 1,
+                    "font": {
+                      "version": 1,
+                      "name": "Titillium Web",
+                      "style": "Regular",
+                      "height": 24.0
+                    },
+                    "colour": "ffe6dcb4",
+                    "justification": "horizontallyCentred verticallyCentred",
+                    "case": "Original"
+                  },
+                  "type": "Text",
+                  "handleName": "Data",
+                  "text": "SET VOW MODE = ADSR, OR WORD WITH WORD ENV ON (SENS AND HOLD ARE HIDDEN TOO)"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": []
+              },
+              "bounds": {
+                "version": 2,
+                "acceptsHWFocus": "No",
+                "showWhenDataModelInvalid": "Hide",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "40 124 1200 34",
+                "additionalInvalidatingHandles": [
+                  "RangedEnabling/0/1/4/Parameter 35"
+                ]
+              }
+            }
+          ]
+        },
+        "qlinkBoundsData": [
+          "13 35 1258 127",
+          "13 186 1258 127"
+        ]
+      },
+      {
+        "version": 1,
         "tabName": "RED BTN",
-        "fnKeyIndex": 6,
+        "fnKeyIndex": 5,
         "fnKeySubIndex": 0,
         "componentDefinition": {
           "version": 2,

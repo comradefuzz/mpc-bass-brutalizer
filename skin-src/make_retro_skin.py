@@ -19,6 +19,7 @@ import math
 import os
 import random
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -67,6 +68,7 @@ BG_COLOUR = "ff2c352b"
 SLOT_X = (23, 343, 663, 983)
 SLOT_Y = (45, 196, 346, 497)
 SLOT_W, SLOT_H = 278, 107
+NUM_PARAMS = 0   # set from build/params.json in build()
 
 
 # ---------------------------------------------------------------------------------------------
@@ -342,7 +344,7 @@ def _icon_vm_lfo(c, w, h, col):
 
 def _icon_vm_env(c, w, h, col):
     x0, x1, cy, amp = _vm_geom(w, h)
-    pts = [(0.0, 0.9), (0.12, -0.9), (0.3, -0.4), (0.6, 0.25), (1.0, 0.85)]
+    pts = [(0.0, -0.85), (0.12, -0.85), (0.3, 0.9), (0.5, 0.05), (0.75, 0.05), (0.95, -0.85)]
     _poly(c, [(x0 + (x1 - x0) * px, cy - amp * py) for px, py in pts], col)
 
 
@@ -384,7 +386,27 @@ def _icon_vc_robot(c, w, h, col):
               (x1, cy - 6)], col)
 
 
-CUSTOM_ICONS.update({"sober": _icon_sober, "drunk": _icon_drunk, "crazy": _icon_crazy,
+def _icon_tr_loop(c, w, h, col):
+    cx, cy = w / 2.0, (h - 12) / 2.0 + 3.0
+    r = 9.0
+    a0, a1 = math.radians(40.0), math.radians(320.0)
+    pts = [(cx + r * math.cos(a0 + (a1 - a0) * i / 24.0), cy + r * math.sin(a0 + (a1 - a0) * i / 24.0)) for i in range(25)]
+    _poly(c, pts, col, 2.4)
+    ex, ey = pts[-1]
+    tx, ty = -math.sin(a1), math.cos(a1)   # direction of travel at the end of the arc
+    for sgn in (1.0, -1.0):
+        ang = math.radians(150.0) * sgn
+        dx, dy = tx * math.cos(ang) - ty * math.sin(ang), tx * math.sin(ang) + ty * math.cos(ang)
+        capsule(c, ex, ey, ex + dx * 6.0, ey + dy * 6.0, 2.2, col)
+
+
+def _icon_tr_hit(c, w, h, col):
+    cx, cy = w / 2.0, (h - 12) / 2.0 + 3.0
+    pts = [(cx - 28, cy + 7), (cx - 8, cy + 7), (cx - 5, cy - 9), (cx + 4, cy + 1), (cx + 14, cy + 5), (cx + 28, cy + 7)]
+    _poly(c, pts, col, 2.4)
+
+
+CUSTOM_ICONS.update({"tr_loop": _icon_tr_loop, "tr_hit": _icon_tr_hit,"sober": _icon_sober, "drunk": _icon_drunk, "crazy": _icon_crazy,
                      "vm_manual": _icon_vm_manual, "vm_lfo": _icon_vm_lfo, "vm_env": _icon_vm_env, "vm_step": _icon_vm_step,
                      "vc_normal": _icon_vc_normal, "vc_choir": _icon_vc_choir, "vc_whisper": _icon_vc_whisper,
                      "vc_robot": _icon_vc_robot})
@@ -417,6 +439,52 @@ def red_button(pressed):
             c.blend(py * W + px, colr, 1.0)
     pixfont.draw_text(plot, int(cx - wd / 2.0), int(cy - 28 + off), word, scale, with_alpha(col, 235))
     return c
+
+
+def adsr_page_extra(b, rnd):
+    """A schematic of the envelope on the ADSR screen: what Attack, Decay, Sustain and Release mean."""
+    x0, base, top, sus = 330, 508, 436, 472
+    pts = [(x0, base), (x0 + 60, base), (x0 + 200, top), (x0 + 360, sus), (x0 + 540, sus), (x0 + 700, base)]
+    # axes
+    b.hline(x0 - 20, x0 + 740, base + 2, CREAM_DIM, 0.8, 2)
+    b.vline(x0 - 20, top - 30, base + 4, CREAM_DIM, 0.8, 2)
+    for k in range(len(pts) - 1):
+        (ax, ay), (bx, by) = pts[k], pts[k + 1]
+        for dy in (-1, 0, 1):
+            b.line(ax, ay + dy, bx, by + dy, AMBER, 0.95)
+    # segment boundaries and letters
+    for xb in (x0 + 60, x0 + 200, x0 + 360, x0 + 540, x0 + 700):
+        for yy in range(top - 20, base + 2, 8):
+            b.blend(xb, yy, CREAM_DIM, 0.6)
+    b.text(x0 + 100 - 9, base + 14, "A", 3, CREAM, 0.95)
+    b.text(x0 + 280 - 9, base + 14, "D", 3, CREAM, 0.95)
+    b.text(x0 + 450 - 9, base + 14, "S", 3, CREAM, 0.95)
+    b.text(x0 + 620 - 9, base + 14, "R", 3, CREAM, 0.95)
+    b.text(x0 + 4, base - 22, "HIT", 2, AMBER, 0.95)
+    b.text(x0 + 592 - 6 * 2 * 9 // 2, top - 26, "NOTE ENDS", 2, AMBER, 0.95)
+    b.text(x0 - 12 * 5 - 34, top - 6, "B", 3, CREAM, 0.95)
+    b.text(x0 - 12 * 5 - 34, base - 16, "A", 3, CREAM, 0.95)
+
+
+def words_page_extra(b, rnd):
+    """The word table: every word is a smooth glide through four key vowels."""
+    words = [("WOW", "OO AH OH OO"), ("YAY", "EE EH AE EE"), ("YO", "EE UH OH OH"), ("YOY", "EE OH OH EE"),
+             ("YEAH", "EE EH AE AH"), ("YOI", "OH OH EH EE"), ("WAH", "OO UH AH AH"), ("OOH-AAH", "OO OO AH AH"),
+             ("EOW", "EH OH OO OO"), ("MAMA", "AH OO AH OO"), ("CUSTOM", "STEP 1 2 3 4")]
+    y0 = 340
+    b.text(34, y0 - 4, "WORDS  (FOUR KEY VOWELS, SMOOTH GLIDE)", 2, AMBER, 0.95)
+    b.hline(34 + 12 * 38 + 10, 1250, y0 + 2, AMBER, 0.45, 2)
+    for k, (w, v) in enumerate(words):
+        col, row = divmod(k, 4)
+        x = 34 + col * 400
+        y = y0 + 26 + row * 19
+        b.text(x, y, w, 2, CREAM, 0.95)
+        b.text(x + 12 * 9, y, v, 2, CREAM_DIM, 0.95)
+    y = y0 + 26 + 4 * 19 + 14
+    for line in ("VOW SYNC = LENGTH OF ONE WORD. TRIG: LOOP REPEATS WITH THE TEMPO, HIT PLAYS ONCE PER HIT.",
+                 "TURN VOW WORD AND DOUBLE-TAP IT FOR THE LIST. RATE IS USED ONLY WHEN SYNC = HZ."):
+        b.text(34, y, line, 2, CREAM, 0.88)
+        y += 19
 
 
 def red_page_extra(b, rnd):
@@ -456,6 +524,9 @@ def red_page_extra(b, rnd):
         if line:
             b.text(x, y, line, 2, CREAM, 0.9)
         y += 19
+
+
+PIDX, PCHOICES = {}, {}
 
 
 class Buf:
@@ -617,7 +688,7 @@ def make_background(spec, seed):
     plate(b, 30, 548, 700, 612, rnd)
     b.text(52, 556, "BASS BRUTALIZER", 4, (46, 44, 38, 255), 1.0)
     b.text(53, 557, "BASS BRUTALIZER", 4, (255, 255, 255, 255), 0.18)
-    b.text(52, 590, "COMRADE FUZZ  MODEL BB-1  45 PARAMETERS", 2, (46, 44, 38, 255), 1.0)
+    b.text(52, 590, "COMRADE FUZZ  MODEL BB-1  %d PARAMETERS" % NUM_PARAMS, 2, (46, 44, 38, 255), 1.0)
     b.text(730, 556, spec["page_tag"], 3, CREAM, 0.95)
     b.text(730, 586, "SER NO 0417  TY 25-2026", 2, CREAM_DIM, 0.95)
     # indicator lamps (decor)
@@ -668,7 +739,7 @@ PAGES = {
             "SPLIT: EVERYTHING BELOW THE CUTOFF STAYS CLEAN. SPLIT ON OFF OR 0 HZ = THE WHOLE SIGNAL IS DISTORTED.",
             "OCT SUB ADDS AN OCTAVE-DOWN SUB TONE. SUB SETS THE CLEAN LOW BAND LEVEL. MIX BLENDS DRY AND WET.",
         ],
-        "page_tag": "1/7  MAIN",
+        "page_tag": "1/6  MAIN",
     },
     "BAND": {
         "captions": ["MULTIBAND  (MIDS AND HIGHS SHAPED SEPARATELY)"],
@@ -676,7 +747,7 @@ PAGES = {
             "MULTIBAND ON: HI SPLIT DIVIDES THE BODY INTO MIDS AND HIGHS, EACH WITH ITS OWN SHAPER.",
             "HI DRIVE ADDS OR CUTS DRIVE ON THE HIGHS ONLY. MULTIBAND OFF = ONE SHAPER FOR EVERYTHING.",
         ],
-        "page_tag": "2/7  BAND",
+        "page_tag": "2/6  BAND",
     },
     "CRUSH": {
         "captions": ["BITCRUSH & DECIMATE", "RING MOD"],
@@ -684,7 +755,7 @@ PAGES = {
             "CRUSH ON / RING ON SWITCH EACH SECTION. BITS 16 AND DECIMATE 1X DO NOTHING EVEN WHEN ON.",
             "FEWER BITS = HARSHER QUANTISING. HIGHER DECIMATE = MORE ALIASING. RING HZ = CARRIER (METALLIC).",
         ],
-        "page_tag": "3/7  CRUSH",
+        "page_tag": "3/6  CRUSH",
     },
     "WOBBLE": {
         "captions": ["WOBBLE  (ON / POSITION / FILTER)", "LFO"],
@@ -692,25 +763,41 @@ PAGES = {
             "WOBBLE ON SWITCHES THE SECTION. POS: PRE = BEFORE DISTORTION (GROWL)  POST = AFTER CRUSH (WOBBLE).",
             "WOB SYNC: FREE = RATE IN HZ, OTHERWISE LOCKED TO THE MPC TEMPO. DEPTH 100% = PLUS MINUS 4 OCTAVES.",
         ],
-        "page_tag": "4/7  WOBBLE",
+        "page_tag": "4/6  WOBBLE",
     },
     "VOWEL": {
-        "captions": ["VOWEL STAGE  (FORMANT FILTERS)", "MOTION", "WORDS & TIMING"],
+        "captions": ["VOWEL STAGE  (FORMANT FILTERS)", "MOTION"],
         "hints": [
             "VOWELS NEED HARMONICS: USE POS = POST (AFTER THE DRIVE). PRE FILTERS THE BODY BEFORE IT IS DISTORTED.",
-            "MODE: MANUAL = FIXED MORPH  LFO = SWEEPS A-B  ENV = FOLLOWS PLAYING LEVEL  STEP = PLAYS A WORD.",
-            "WORD ONLY WORKS IN STEP (4 VOWELS PER LOOP). A, B, MORPH AND DEPTH ARE HIDDEN WHEN UNUSED.",
+            "MODE: MANUAL = FIXED MORPH  LFO = SWEEPS A-B  ADSR = EACH HIT OPENS A TO B  WORD = SEE SCREEN 2.",
+            "VOWELS: OO OH UH AH AE EH EE IH AW ER UE OE YI W L (UE, OE = GERMAN U, O UMLAUT  YI = RUSSIAN Y).",
         ],
-        "page_tag": "5/7  VOWEL",
+        "page_tag": "5/6  VOWEL 1/4",
+    },
+    "WORDS": {
+        "captions": ["WORD  (VOW MODE = WORD)", "CUSTOM WORD  (WHEN VOW WORD = CUSTOM)"],
+        "no_hints": True,
+        "extra": words_page_extra,
+        "page_tag": "5/6  WORDS 2/4",
     },
     "VOICE": {
         "captions": ["VOICE"],
         "hints": [
+            "THIS IS SCREEN 3 OF THE VOWEL TAB: IT SHAPES THE VOWEL STAGE AND DOES NOTHING WHILE THE STAGE IS OFF.",
             "GENDER SHIFTS EVERY FORMANT: UP = SMALL AND CARTOONISH, DOWN = GIANT. Q = HOW SHARP THE VOWEL IS.",
             "CHAR: NORMAL  CHOIR (THREE DETUNED SINGERS)  WHISPER (NOISE VOICE)  ROBOT (HARD VOWEL SWITCHING).",
-            "VOW MIX BLENDS THE VOWEL SOUND WITH THE ORIGINAL SIGNAL. 0% = NO EFFECT.",
         ],
-        "page_tag": "6/7  VOICE",
+        "page_tag": "5/6  VOICE 3/4",
+    },
+    "ADSR": {
+        "captions": ["ADSR  (VOW MODE = ADSR, OR WORD ENV ON A HIT WORD)", "TRIGGER  (ADSR AND WORD / HIT)"],
+        "hints": [
+            "THE ADSR WORKS IN VOW MODE = ADSR (A OPENS TOWARD B) AND ON A HIT WORD WITH WORD ENV ON.",
+            "ATTACK = TIME TO OPEN  DECAY = FALL TO SUSTAIN  SUSTAIN = LEVEL WHILE HELD  RELEASE = FADE OUT.",
+            "SENS = HIT SENSITIVITY  GAP = MIN TIME BETWEEN HITS (RAISE FOR DOUBLES)  HOLD = NOTE LENGTH.",
+        ],
+        "extra": adsr_page_extra,
+        "page_tag": "5/6  ADSR 4/4",
     },
     "RED BTN": {
         "captions": [],
@@ -719,7 +806,7 @@ PAGES = {
         "panels": [(30, 30, 462, 470), (482, 30, 1262, 470)],
         "extra": red_page_extra,
         "red": True,
-        "page_tag": "7/7  RED BTN",
+        "page_tag": "6/6  RED BTN",
     },
 }
 
@@ -755,6 +842,12 @@ def build(preview):
     params = os.path.join(PLUGIN, "build", "params.json")
     if not os.path.isfile(params):
         sys.exit("build/params.json missing: run  python3 tools/build.py \"plugins/Bass Brutalizer\"  first")
+    global NUM_PARAMS
+    plist = json.load(open(params)).get("params") or json.load(open(params)).get("parameters")
+    NUM_PARAMS = len(plist)
+    global PIDX, PCHOICES
+    PIDX = {q["name"]: q["index"] for q in plist}
+    PCHOICES = {q["name"]: len(q["choices"]) for q in plist if q.get("choices")}
     tmp = tempfile.mkdtemp(prefix="bb_skin_")
     try:
         subprocess.check_call([sys.executable, os.path.join(SDK, "tools", "gen_ui.py"), "--params", params,
@@ -804,12 +897,14 @@ def build(preview):
             keep.append(ent)
     big["componentsData"] = keep
     pd["componentDefinitions"]["localComponentDefinitions"].append({"key": "bigRed", "value": big})
+    pd["componentDefinitions"]["localComponentDefinitions"].append(
+        {"key": "radio2Trig", "value": icon_def("trig", "radio2", 122, 126, 46, 42)})
     pd["componentDefinitions"]["localComponentDefinitions"].append({"key": "radio4VMode", "value": icon_def("vmode")})
     pd["componentDefinitions"]["localComponentDefinitions"].append({"key": "radio4VChar", "value": icon_def("vchar")})
     # control name -> (new type, base type, key count, key width, key pitch, caption y offset)
     icon_for = {"Mode": ("radio4Mode", "radio4", 4, 58, 62, 90), "Wob Shape": ("radio4Wave", "radio4", 4, 58, 62, 90),
                 "Wob Pos": ("radio3Pos", "radio3", 3, 80, 86, 90), "Vow Pos": ("radio3Pos", "radio3", 3, 80, 86, 90),
-                "Vow Mode": ("radio4VMode", "radio4", 4, 58, 62, 90), "Vow Char": ("radio4VChar", "radio4", 4, 58, 62, 90),
+                "Vow Trig": ("radio2Trig", "radio2", 2, 122, 126, 90), "Vow Mode": ("radio4VMode", "radio4", 4, 58, 62, 90), "Vow Char": ("radio4VChar", "radio4", 4, 58, 62, 90),
                 "Sanity": ("radio3Sanity", "radio3", 3, 128, 142, 128)}
 
     # --- pages ---
@@ -848,21 +943,91 @@ def build(preview):
                     if lab:
                         lab["bounds"]["bounds"] = "%d %d %d 16" % (x + 15 + pitch * k, y + cap_y, kw)
                         lab["componentData"]["data"]["textStyle"]["font"]["height"] = 15.0
-        if name == "VOWEL" and "Vow Mode" in by_name:
-            # Show only the controls the chosen Vow Mode uses (0 Manual, 1 LFO, 2 Env, 3 Step).
-            mode_handle = by_name["Vow Mode"]["handle remapping"]["map"][0]["value"]
-            conds = {"Vow Word": "IndexedEnabling/3/4/", "Vowel A": "RangedEnabling/0/2/4/",
-                     "Vowel B": "RangedEnabling/0/2/4/", "Morph": "RangedEnabling/0/2/4/",
-                     "Vow Depth": "RangedEnabling/1/2/4/"}
+        if name in ("VOWEL", "WORDS"):
+            # Show only the controls the chosen Vow Mode / Vow Word uses (modes: 0 Manual, 1 ADSR, 2 LFO, 3 Word).
+            mode_h = "Parameter %d" % PIDX["Vow Mode"]
+            conds = {"Vowel A": "RangedEnabling/0/2/4/" + mode_h, "Vowel B": "RangedEnabling/0/2/4/" + mode_h,
+                     "Morph": "RangedEnabling/0/2/4/" + mode_h, "Vow Depth": "RangedEnabling/1/2/4/" + mode_h,
+                     "Vow Rate": "IndexedEnabling/0/%d/Parameter %d" % (PCHOICES["Vow Sync"], PIDX["Vow Sync"])}
             for c in comps:
-                prefix = conds.get(c["componentData"]["name"])
-                if prefix:
+                handle = conds.get(c["componentData"]["name"])
+                if handle:
                     c["bounds"]["version"] = 2
                     c["bounds"]["showWhenDataModelInvalid"] = "Hide"
-                    c["bounds"]["additionalInvalidatingHandles"] = [prefix + mode_handle]
+                    c["bounds"]["additionalInvalidatingHandles"] = [handle]
+        if name in ("ADSR", "WORDS"):
+            mode_h = "Parameter %d" % PIDX["Vow Mode"]
+            template = None
+            for tb in pd["tabs"]:
+                for c in tb["componentDefinition"]["componentsData"]:
+                    if c["componentData"]["type"] == "Label" and c["componentData"]["data"].get("type") == "Text":
+                        template = c
+                        break
+                if template:
+                    break
+
+            def hint_label(lname, text, bounds, height, handle):
+                e = copy.deepcopy(template)
+                e["componentData"]["name"] = lname
+                e["componentData"]["data"]["text"] = text
+                ts = e["componentData"]["data"]["textStyle"]
+                ts["font"]["height"] = height
+                ts["colour"] = TXT_VALUE
+                ts["justification"] = "horizontallyCentred verticallyCentred"
+                e["bounds"]["bounds"] = bounds
+                e["bounds"]["version"] = 2
+                e["bounds"]["showWhenDataModelInvalid"] = "Hide"
+                e["bounds"]["additionalInvalidatingHandles"] = [handle]
+                return e
+
+            def only_when(c, handle):
+                c["bounds"]["version"] = 2
+                c["bounds"]["showWhenDataModelInvalid"] = "Hide"
+                c["bounds"]["additionalInvalidatingHandles"] = [handle]
+
+            if name == "ADSR":
+                # the ADSR controls exist only in the modes that use them: ADSR (2) and Word (3)
+                for c in comps:
+                    if c["componentData"]["type"] != "Label":
+                        only_when(c, "RangedEnabling/2/3/4/" + mode_h)
+                if template:
+                    inactive = "RangedEnabling/0/1/4/" + mode_h   # Manual and LFO
+                    comps.append(hint_label("hint off 1", "ADSR IS OFF IN THIS MODE", "40 70 1200 48", 38.0, inactive))
+                    comps.append(hint_label("hint off 2", "SET VOW MODE = ADSR, OR WORD WITH WORD ENV ON (SENS AND HOLD ARE HIDDEN TOO)", "40 124 1200 34", 24.0, inactive))
+            else:
+                # the word controls exist only in Word mode (3); Vow Sync and Vow Rate are shared with the LFO and stay
+                for c in comps:
+                    if c["componentData"]["name"] in ("Vow Word", "Vow Trig", "Step 1", "Step 2", "Step 3", "Step 4"):
+                        only_when(c, "IndexedEnabling/3/4/" + mode_h)
+                if template:
+                    inactive = "RangedEnabling/0/2/4/" + mode_h   # Manual, LFO, ADSR
+                    comps.append(hint_label("hint off 1", "WORD IS OFF IN THIS MODE", "40 66 600 44", 32.0, inactive))
+                    comps.append(hint_label("hint off 2", "SET VOW MODE = WORD", "40 116 600 34", 24.0, inactive))
+                    comps.append(hint_label("hint off 3", "THE CUSTOM STEPS ARE HIDDEN TOO", "40 222 1200 40", 24.0, inactive))
         if name == "RED BTN":
             tab["qlinkBoundsData"] = ["40 50 910 380"]
     restyle_text(pd)
+
+    # --- function keys: VOICE and ADSR are extra screens (sub-tabs) of the VOWEL key ---
+    subs_of = {"WORDS": "VOWEL", "VOICE": "VOWEL", "ADSR": "VOWEL"}
+    key_index, sub_count, qtab = {}, {}, {}
+    next_key = -1
+    for tab in pd["tabs"]:
+        tname = tab["tabName"]
+        if tname in subs_of:
+            parent = subs_of[tname]
+            sub_count[parent] = sub_count.get(parent, 0) + 1
+            tab["fnKeyIndex"], tab["fnKeySubIndex"] = key_index[parent], sub_count[parent]
+            qtab[tname] = (key_index[parent] + 1, sub_count[parent] + 1)
+        else:
+            next_key += 1
+            key_index[tname] = next_key
+            tab["fnKeyIndex"], tab["fnKeySubIndex"] = next_key, 0
+            qtab[tname] = (next_key + 1, 1)
+    qdata = json.loads(qlinks)
+    for entry, tab in zip(qdata["Screen Mode Q-Links"]["map"], pd["tabs"]):
+        entry["Tab"], entry["SubTab"] = qtab[tab["tabName"]]
+    qlinks = json.dumps(qdata, indent=2)
 
     # --- write the skins folder ---
     out = os.path.join(PLUGIN, "skins")
@@ -899,9 +1064,17 @@ def build(preview):
             imgs["fader_h_uni.png"] = fr
     kit.write_png(os.path.join(out, "fader_h_uni.png"), FW, rows)
     print("rendering switches and keys ...")
+    def png_size(path):
+        with open(path, "rb") as fh:
+            fh.read(16)
+            return struct.unpack(">II", fh.read(8))
+    seg2_w, seg2_h = png_size(os.path.join(tmp, "seg2_on.png"))
     for on in (True, False):
         s = "on" if on else "off"
         c = toggle(on); save("toggle_%s.png" % s, c); imgs["toggle_%s.png" % s] = c
+        c = key(seg2_w, seg2_h, on); save("seg2_%s.png" % s, c); imgs["seg2_%s.png" % s] = c
+        for k, ic in enumerate(("tr_loop", "tr_hit")):
+            c = key(122, 42, on, ic); save("trig_%d_%s.png" % (k, s), c); imgs["trig_%d_%s.png" % (k, s)] = c
         c = key(58, 40, on); save("seg4_%s.png" % s, c); imgs["seg4_%s.png" % s] = c
         c = key(80, 40, on); save("seg3_%s.png" % s, c); imgs["seg3_%s.png" % s] = c
         for k, ic in enumerate(("soft", "hard", "fold", "rect")):
@@ -936,46 +1109,62 @@ SAMPLE = {"Drive": "18.0 DB", "Tone": "6000 HZ", "Mix": "100 %", "Output": "0.0 
 
 
 def previews(tui, tab_specs, bgs, imgs):
-    """Compose approximate page mock-ups (pixel-font labels instead of the MPC's own text)."""
+    """Compose approximate page mock-ups (pixel-font labels instead of the MPC's own text).
+    The ADSR screen is drawn twice: active (controls) and inactive (the hint on top of the hidden controls)."""
     pd = tui["pageData"]
     defs = {e["key"]: e["value"] for e in pd["componentDefinitions"]["localComponentDefinitions"]}
     outdir = os.path.join(PLUGIN, "build")
     for tab, (name, _spec) in zip(pd["tabs"], tab_specs):
-        b = Buf(1280, 628)
-        b.d[:] = bgs[name].d
-        for c in tab["componentDefinition"]["componentsData"]:
-            cd = c["componentData"]
-            x, y, w, h = [int(float(v)) for v in c["bounds"]["bounds"].split()]
-            if cd["type"] == "Label":
-                data = cd["data"]
-                col = (244, 178, 64, 255) if data["type"] == "Value" else CREAM
-                b.text(x, y + 2, data.get("text", "").upper(), 2, col)
-                continue
-            d = defs.get(cd["type"])
-            if not d:
-                continue
-            for ent in d["componentsData"]:
-                e = ent["componentData"]
-                ex, ey, ew, eh = [int(float(v)) for v in ent["bounds"]["bounds"].split()]
-                if e["type"] == "Knob":
-                    fn = e["data"]["filmStrip"]
-                    if fn in imgs:
-                        b.canvas(imgs[fn], x + ex, y + ey)
-                elif e["type"] == "Button":
-                    on = e["data"]["buttonId"] == 0 or e["data"]["numButtonsInGroup"] == 1
-                    if e["data"]["onImage"].startswith("red_"):
-                        on = False
-                    img = imgs.get(e["data"]["onImage" if on else "offImage"])
-                    if img:
-                        b.canvas(img, x + ex, y + ey)
-                elif e["type"] == "Label":
-                    t = e["data"]["type"]
-                    if t == "Name":
-                        b.text(x + ex, y + ey + 4, cd["name"].upper(), 3, (200, 189, 146, 255))
-                    elif t == "Value":
-                        b.text(x + ex, y + ey + 4, SAMPLE.get(cd["name"], "--"), 3, (244, 178, 64, 255))
-        path = os.path.join(outdir, "preview_%s.png" % name.lower().replace(" ", "_"))
-        kit.write_png(path, b.w, b.rows())
+        for suffix in (("", "_off") if name in ("ADSR", "WORDS") else ("",)):
+            inactive = suffix == "_off"
+            b = Buf(1280, 628)
+            b.d[:] = bgs[name].d
+            for c in tab["componentDefinition"]["componentsData"]:
+                cd = c["componentData"]
+                x, y, w, h = [int(float(v)) for v in c["bounds"]["bounds"].split()]
+                is_hint = cd["name"].startswith("hint off")
+                keep_when_inactive = cd["name"] in ("Vow Sync", "Vow Rate") and name == "WORDS"   # shared with the LFO
+                if name in ("ADSR", "WORDS") and is_hint != inactive and not (inactive and keep_when_inactive):
+                    continue   # the hint is shown only when the screen is inactive; the controls only when it is active
+                if cd["type"] == "Label":
+                    data = cd["data"]
+                    col = (244, 178, 64, 255) if (data["type"] == "Value" or is_hint) else CREAM
+                    text = data.get("text", "").upper()
+                    if is_hint:
+                        scale = 3 if "IS OFF" in text else 2
+                        if w < 700 and len(text) * 6 * scale > w:
+                            scale = 1
+                        b.text(x + (w - pixfont.text_width(text, scale)) // 2, y + (h - 7 * scale) // 2, text, scale, col)
+                    else:
+                        b.text(x, y + 2, text, 2, col)
+                    continue
+                d = defs.get(cd["type"])
+                if not d:
+                    continue
+                for ent in d["componentsData"]:
+                    e = ent["componentData"]
+                    ex, ey, ew, eh = [int(float(v)) for v in ent["bounds"]["bounds"].split()]
+                    if e["type"] == "Knob":
+                        fn = e["data"]["filmStrip"]
+                        if fn in imgs:
+                            b.canvas(imgs[fn], x + ex, y + ey)
+                    elif e["type"] == "Button":
+                        on = e["data"]["buttonId"] == 0 or e["data"]["numButtonsInGroup"] == 1
+                        if e["data"]["onImage"].startswith("red_"):
+                            on = False
+                        img = imgs.get(e["data"]["onImage" if on else "offImage"])
+                        if img:
+                            b.canvas(img, x + ex, y + ey)
+                    elif e["type"] == "Label":
+                        tt = e["data"]["type"]
+                        if tt == "Name":
+                            b.text(x + ex, y + ey + 4, cd["name"].upper(), 3, (200, 189, 146, 255))
+                        elif tt == "Value":
+                            b.text(x + ex, y + ey + 4, SAMPLE.get(cd["name"], "--"), 3, (244, 178, 64, 255))
+            if inactive:   # the controls are hidden in this mode: blank plates where they would be
+                pass
+            path = os.path.join(outdir, "preview_%s%s.png" % (name.lower().replace(" ", "_"), suffix))
+            kit.write_png(path, b.w, b.rows())
         print("preview:", path)
 
 
