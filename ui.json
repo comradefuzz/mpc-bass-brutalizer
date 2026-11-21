@@ -1,0 +1,161 @@
+{
+  "kit": "mpc-red",
+  "qlinkGroups": "rows",
+  "pages": [
+    {
+      "name": "MAIN",
+      "controls": [
+        {
+          "param": "Drive",
+          "widget": "knob"
+        },
+        {
+          "param": "Tone",
+          "widget": "knob"
+        },
+        {
+          "param": "Mix",
+          "widget": "fader"
+        },
+        {
+          "param": "Output",
+          "widget": "fader"
+        },
+        {
+          "param": "Mode",
+          "widget": "switch"
+        },
+        {
+          "param": "Bias",
+          "widget": "knob",
+          "polarity": "bipolar"
+        },
+        {
+          "param": "Pre Tilt",
+          "widget": "knob",
+          "polarity": "bipolar"
+        },
+        "empty",
+        {
+          "param": "Split On",
+          "widget": "switch"
+        },
+        {
+          "param": "Split",
+          "widget": "knob"
+        },
+        {
+          "param": "Sub",
+          "widget": "fader"
+        },
+        {
+          "param": "Oct Sub",
+          "widget": "fader"
+        }
+      ]
+    },
+    {
+      "name": "BAND",
+      "controls": [
+        {
+          "param": "Hi Split",
+          "widget": "knob"
+        },
+        {
+          "param": "Hi Drive",
+          "widget": "knob",
+          "polarity": "bipolar"
+        },
+        {
+          "param": "Multiband",
+          "widget": "switch"
+        },
+        "empty"
+      ]
+    },
+    {
+      "name": "CRUSH",
+      "controls": [
+        {
+          "param": "Crush On",
+          "widget": "switch"
+        },
+        {
+          "param": "Bits",
+          "widget": "knob"
+        },
+        {
+          "param": "Decimate",
+          "widget": "knob"
+        },
+        "empty",
+        {
+          "param": "Ring On",
+          "widget": "switch"
+        },
+        {
+          "param": "Ring",
+          "widget": "knob"
+        },
+        {
+          "param": "Ring Hz",
+          "widget": "knob"
+        },
+        "empty"
+      ]
+    },
+    {
+      "name": "WOBBLE",
+      "controls": [
+        {
+          "param": "Wobble On",
+          "widget": "switch"
+        },
+        {
+          "param": "Wob Pos",
+          "widget": "switch"
+        },
+        {
+          "param": "Wob Freq",
+          "widget": "knob"
+        },
+        {
+          "param": "Wob Reso",
+          "widget": "knob"
+        },
+        {
+          "param": "Wob Shape",
+          "widget": "switch"
+        },
+        {
+          "param": "Wob Rate",
+          "widget": "knob"
+        },
+        {
+          "param": "Wob Depth",
+          "widget": "knob"
+        },
+        {
+          "param": "Wob Sync",
+          "widget": "knob",
+          "overlay": "menu"
+        }
+      ]
+    },
+    {
+      "name": "RED BTN",
+      "controls": [
+        {
+          "param": "Red Button",
+          "widget": "switch"
+        },
+        {
+          "param": "Sanity",
+          "widget": "switch"
+        },
+        "empty",
+        "empty"
+      ]
+    }
+  ]
+}

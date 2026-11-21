@@ -1,0 +1,22 @@
+diff --git a/framework/mpc_plugin.h b/framework/mpc_plugin.h
+index dbf239b..d23c87a 100644
+--- a/framework/mpc_plugin.h
++++ b/framework/mpc_plugin.h
+@@ -556,8 +556,16 @@ public:
+         if (programs_.empty() || i < 0 || i >= (int)programs_.size()) return;
+         currentProgram_ = i;
+         const Program& p = programs_[(size_t)i];
+-        for (int k = 0; k < numParams() && k < (int)p.plainValues.size(); ++k) set(k, p.plainValues[(size_t)k]);
++        for (int k = 0; k < numParams() && k < (int)p.plainValues.size(); ++k)
++        {
++            const float v = p.plainValues[(size_t)k];
++            if (v == v) set(k, v);   // a NaN entry means "leave this parameter as it is"
++        }
+         stateLoadPending_.store(true, std::memory_order_release);
++        // The MPC does not re-read parameter values after a program change, so its knobs and
++        // faders would keep showing the old positions. A display update makes it re-read them
++        // (and rebuild the plugin page; see docs/host-contract.md).
++        requestDisplayUpdate();
+     }
+ 
+     std::string displayText(int i)

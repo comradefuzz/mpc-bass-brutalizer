@@ -1,0 +1,17 @@
+{
+  "name": "Bass Brutalizer",
+  "manufacturer": "comrade fuzz",
+  "version": "1.0.0",
+  "format": "vst2",
+  "kind": "effect",
+  "uid": "C4y8",
+  "numInputs": 2,
+  "numOutputs": 2,
+  "category": "Effect",
+  "file32": "VST/bass-brutalizer-arm32.so",
+  "file64": "VST/bass-brutalizer-arm64.so",
+  "description": "Bass Brutalizer: bass distortion that keeps the sub clean and destroys everything above it. Soft, hard, fold and rectify modes.",
+  "author": "comrade fuzz",
+  "url": "",
+  "license": "MIT"
+}
